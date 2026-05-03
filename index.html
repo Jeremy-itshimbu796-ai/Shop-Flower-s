@@ -686,6 +686,26 @@
       .hero-stats { gap: 1.25rem; }
       .section { padding: 4rem 1.25rem; }
       .header-inner { padding: 1rem 1.25rem; }
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+      .product-card { padding: 0.75rem; }
+      .product-body { padding: 0.75rem; }
+      .product-name { font-size: 1rem; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-form input { min-inline-size: 100%; }
+    }
+    @media (max-inline-size: 640px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 5rem 1.5rem 2rem; }
+      .hero-right { block-size: 40vh; }
+      .hero h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+      .section-title { font-size: clamp(1.5rem, 3vw, 2rem); }
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .cart-panel { inline-size: 100vw; }
+      .hero-stats { flex-direction: column; gap: 1rem; }
+      .section-header { flex-direction: column; gap: 1rem; }
+      .filters { justify-content: center; }
+      .about-grid { gap: 1.5rem; }
     }
   </style>
 </head>
@@ -729,7 +749,7 @@
   <!-- HERO -->
   <section id="home" class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Kinshasa · Congo</p>
+      <p class="hero-eyebrow">Lubumbashi · Congo</p>
       <h1>Offrez le <em>sourire</em><br>avec des fleurs</h1>
       <p class="hero-desc">Bouquets frais cueillis avec soin, créations sur mesure et livraisons rapides pour chaque émotion.</p>
       <div class="hero-actions">
@@ -757,7 +777,7 @@
         <span class="hero-tag-icon"><i class="fa-solid fa-truck-fast" style="color:var(--forest);font-size:1.5rem"></i></span>
         <div class="hero-tag-text">
           <strong>Livraison rapide</strong>
-          <span>Kinshasa & environs</span>
+          <span>Lubumbashi & environs</span>
         </div>
       </div>
     </div>
@@ -803,11 +823,11 @@
         <p class="section-label">Notre histoire</p>
         <h2 class="section-title">La passion des <em>fleurs</em></h2>
         <p>Alegria Shop Flower's est née d'une passion sincère pour la beauté des fleurs et la joie qu'elles apportent. Chaque bouquet est une lettre sans mots, un sourire offert.</p>
-        <p>Basée à Kinshasa, notre boutique crée des compositions pour chaque occasion — anniversaires, mariages, remerciements ou juste pour faire plaisir.</p>
+        <p>Basée à Lubumbashi, notre boutique crée des compositions pour chaque occasion — anniversaires, mariages, remerciements ou juste pour faire plaisir.</p>
         <ul class="feature-list">
           <li><i class="fa-solid fa-check"></i> Fleurs fraîches approvisionnées chaque matin</li>
           <li><i class="fa-solid fa-check"></i> Créations sur mesure selon vos envies</li>
-          <li><i class="fa-solid fa-check"></i> Livraison rapide à Kinshasa et ses environs</li>
+          <li><i class="fa-solid fa-check"></i> Livraison rapide à Lubumbashi et ses environs</li>
           <li><i class="fa-solid fa-check"></i> Conseils personnalisés pour chaque occasion</li>
         </ul>
         <a href="#contact" class="btn-primary" style="margin-block-start:0.5rem; display:inline-flex; align-items:center; gap:0.5rem;">Commander sur mesure <i class="fa-solid fa-star" style="font-size:0.7rem"></i></a>
@@ -832,7 +852,7 @@
             <div class="author-avatar">👨</div>
             <div>
               <div class="author-name">Patrick M.</div>
-              <div class="author-loc">Kinshasa, Gombe</div>
+              <div class="author-loc">Lubumbashi, Gombe</div>
             </div>
           </div>
         </div>
@@ -843,7 +863,7 @@
             <div class="author-avatar">👩</div>
             <div>
               <div class="author-name">Marie K.</div>
-              <div class="author-loc">Kinshasa, Limete</div>
+              <div class="author-loc">Lubumbashi, Limete</div>
             </div>
           </div>
         </div>
@@ -854,7 +874,7 @@
             <div class="author-avatar">👧</div>
             <div>
               <div class="author-name">Sophie A.</div>
-              <div class="author-loc">Kinshasa, Ngaliema</div>
+              <div class="author-loc">Lubumbashi, Ngaliema</div>
             </div>
           </div>
         </div>
@@ -907,7 +927,7 @@
           <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
           <div class="contact-detail-text">
             <strong>Localisation</strong>
-            <span>Kinshasa, République Démocratique du Congo</span>
+            <span>Lubumbashi, République Démocratique du Congo</span>
           </div>
         </div>
       </div>
@@ -1005,7 +1025,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    © <span id="year"></span> Alegria Shop Flower's · Fait avec <i class="fa-solid fa-heart" style="color:var(--rose)"></i> à Kinshasa
+    © <span id="year"></span> Alegria Shop Flower's · Fait avec <i class="fa-solid fa-heart" style="color:var(--rose)"></i> à Lubumbashi
   </div>
 </footer>
 
