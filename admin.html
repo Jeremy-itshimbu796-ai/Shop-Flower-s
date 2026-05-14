@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Alegria – Panel Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{
+      --forest:#2d5a45;--forest-light:#3d7a5f;--forest-dim:#e8f2ed;
+      --rose:#c97a96;--rose-dim:#fdf0f4;
+      --gold:#b8975a;--gold-dim:#fdf6ec;
+      --blue:#3b82f6;--blue-dim:#eff6ff;
+      --cream:#faf7f2;--ivory:#f2ede4;
+      --charcoal:#1a1a1a;--muted:#6b6460;--border:rgba(0,0,0,.08);
+      --white:#fff;
+      --shadow-sm:0 2px 8px rgba(0,0,0,.06);
+      --shadow:0 8px 30px rgba(0,0,0,.10);
+      --shadow-lg:0 20px 60px rgba(0,0,0,.14);
+      --r:12px;--sidebar:260px;
+      --ease:cubic-bezier(.25,.46,.45,.94);
+      --spring:cubic-bezier(.34,1.56,.64,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.6;min-block-size:100vh}
+    ::-webkit-scrollbar{inline-size:5px}
+    ::-webkit-scrollbar-track{background:var(--ivory)}
+    ::-webkit-scrollbar-thumb{background:var(--forest);border-radius:3px}
+
+    /* ─── LOGIN ─── */
+    .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#e8f2ed 0%,var(--cream) 60%);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .login-box{background:var(--white);border-radius:20px;padding:3rem 2.5rem;inline-size:100%;max-inline-size:400px;box-shadow:var(--shadow-lg);text-align:center;animation:fadeUp .5s var(--ease)}
+    .login-icon{inline-size:72px;block-size:72px;border-radius:20px;background:var(--forest-dim);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;color:var(--forest);margin-block-end:1.5rem}
+    .login-box h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;margin-block-end:.35rem}
+    .login-box p{color:var(--muted);font-size:.87rem;margin-block-end:2rem}
+    .login-field{display:flex;flex-direction:column;gap:.35rem;margin-block-end:1rem;text-align:start}
+    .login-field label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+    .input-wrap{position:relative}
+    .input-wrap i{position:absolute;inset-inline-start:.95rem;inset-block-start:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none}
+    .input-wrap input{inline-size:100%;padding:.82rem 1rem .82rem 2.4rem;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:all .3s;background:var(--white)}
+    .input-wrap input:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(45,90,69,.09)}
+    .login-btn{inline-size:100%;background:var(--forest);color:#fff;border:none;border-radius:50px;padding:.92rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;transition:all .35s var(--ease);margin-block-start:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+    .login-btn:hover{background:var(--forest-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,90,69,.25)}
+    .login-hint{font-size:.76rem;color:var(--muted);margin-block-start:1.25rem;padding-block-start:1rem;border-block-start:1px solid var(--border)}
+    .login-error{color:#c0392b;font-size:.82rem;margin-block-start:.75rem;display:none;align-items:center;gap:.4rem;justify-content:center;animation:shake .4s var(--ease)}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+    /* ─── APP LAYOUT ─── */
+    .app{display:none;min-block-size:100vh}
+    .app.visible{display:flex}
+
+    /* ─── SIDEBAR ─── */
+    .sidebar{inline-size:var(--sidebar);background:var(--charcoal);color:#fff;display:flex;flex-direction:column;position:fixed;inset-block-start:0;inset-block-end:0;inset-inline-start:0;z-index:50;transition:transform .4s var(--ease);overflow:hidden}
+    .sidebar-head{padding:2rem 1.5rem 1.5rem;border-block-end:1px solid rgba(255,255,255,.07);flex-shrink:0}
+    .sidebar-logo{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;font-style:italic;color:#fff;display:flex;align-items:center;gap:.55rem;text-decoration:none;letter-spacing:.01em}
+    .sidebar-subtitle{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.3);margin-block-start:.3rem}
+    .sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto}
+    .nav-section-label{font-size:.64rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.25);padding:.9rem 1.5rem .35rem;font-weight:600}
+    .nav-item{display:flex;align-items:center;gap:.8rem;padding:.72rem 1.5rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.875rem;transition:all .25s;cursor:pointer;border:none;background:none;inline-size:100%;position:relative;font-family:'DM Sans',sans-serif}
+    .nav-item:hover{color:#fff;background:rgba(255,255,255,.07)}
+    .nav-item.active{color:#fff;background:rgba(255,255,255,.1)}
+    .nav-item.active::before{content:'';position:absolute;inset-inline-start:0;inset-block-start:20%;inset-block-end:20%;inline-size:3px;background:var(--forest-light);border-radius:0 3px 3px 0}
+    .nav-item i{inline-size:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+    .nav-badge{margin-inline-start:auto;background:var(--rose);color:#fff;border-radius:50px;padding:.1rem .55rem;font-size:.68rem;font-weight:700;min-inline-size:22px;text-align:center;animation:pop .3s var(--spring)}
+    @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+    .sidebar-foot{padding:1.25rem 1.5rem;border-block-start:1px solid rgba(255,255,255,.07);flex-shrink:0}
+    .sidebar-user{display:flex;align-items:center;gap:.75rem}
+    .sidebar-avatar{inline-size:36px;block-size:36px;border-radius:10px;background:var(--forest);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0}
+    .sidebar-user-name{font-size:.85rem;color:#fff;font-weight:500}
+    .sidebar-user-role{font-size:.7rem;color:rgba(255,255,255,.35)}
+    .logout-btn{margin-inline-start:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:.88rem;transition:all .3s;padding:.35rem;border-radius:8px;inline-size:30px;block-size:30px;display:flex;align-items:center;justify-content:center}
+    .logout-btn:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+    /* ─── MAIN ─── */
+    .main{margin-inline-start:var(--sidebar);flex:1;display:flex;flex-direction:column;min-block-size:100vh;min-inline-size:0}
+    .topbar{background:var(--white);border-block-end:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;inset-block-start:0;z-index:40;box-shadow:var(--shadow-sm);gap:1rem}
+    .topbar-left{display:flex;align-items:center;gap:.85rem;min-inline-size:0}
+    .topbar-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;white-space:nowrap}
+    .topbar-date{font-size:.76rem;color:var(--muted);margin-block-start:.05rem}
+    .topbar-actions{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
+    .topbar-search{display:flex;align-items:center;gap:.5rem;background:var(--ivory);border-radius:50px;padding:.5rem 1rem;transition:all .3s}
+    .topbar-search:focus-within{box-shadow:0 0 0 2px rgba(45,90,69,.15)}
+    .topbar-search input{background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.83rem;color:var(--charcoal);inline-size:150px}
+    .topbar-search i{color:var(--muted);font-size:.8rem;flex-shrink:0}
+    .icon-btn{inline-size:36px;block-size:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.88rem;color:var(--muted);transition:all .3s}
+    .icon-btn:hover{border-color:var(--forest);color:var(--forest);background:var(--forest-dim)}
+    .mobile-toggle{display:none}
+
+    /* ─── CONTENT ─── */
+    .content{padding:2rem;flex:1}
+    .page{display:none;animation:fadeIn .35s var(--ease)}
+    .page.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ─── STATS ─── */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.25rem;margin-block-end:2rem}
+    .stat-card{background:var(--white);border-radius:var(--r);padding:1.5rem;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1.1rem;transition:all .4s var(--spring);cursor:pointer;border:1.5px solid transparent}
+    .stat-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--border)}
+    .stat-icon{inline-size:52px;block-size:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;transition:transform .4s var(--spring)}
+    .stat-card:hover .stat-icon{transform:scale(1.1) rotate(-5deg)}
+    .stat-icon.green{background:var(--forest-dim);color:var(--forest)}
+    .stat-icon.rose{background:var(--rose-dim);color:var(--rose)}
+    .stat-icon.gold{background:var(--gold-dim);color:var(--gold)}
+    .stat-icon.blue{background:var(--blue-dim);color:var(--blue)}
+    .stat-info{min-inline-size:0}
+    .stat-value{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;line-height:1;display:block}
+    .stat-label{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-block-start:.2rem;display:block}
+    .stat-sub{font-size:.73rem;color:var(--muted);margin-block-start:.3rem;display:flex;align-items:center;gap:.3rem}
+
+    /* ─── CHARTS ─── */
+    .chart-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:1.25rem;margin-block-end:2rem}
+    .chart-card{background:var(--white);border-radius:var(--r);padding:1.5rem;box-shadow:var(--shadow-sm)}
+    .chart-title{font-size:.84rem;font-weight:600;margin-block-end:1.25rem;display:flex;align-items:center;gap:.5rem;color:var(--charcoal)}
+    .chart-title i{color:var(--forest)}
+    .bar-chart{display:flex;align-items:flex-end;gap:.6rem;block-size:130px}
+    .bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:.4rem;position:relative}
+    .bar{inline-size:100%;border-radius:6px 6px 0 0;transition:height .8s var(--ease);cursor:pointer;min-block-size:4px;background:linear-gradient(to top,var(--forest),var(--forest-light));position:relative}
+    .bar:hover{opacity:.82}
+    .bar::after{content:attr(data-val);position:absolute;inset-block-start:-1.5rem;inset-inline-start:50%;transform:translateX(-50%);font-size:.65rem;font-weight:600;color:var(--forest);white-space:nowrap;opacity:0;transition:opacity .2s}
+    .bar:hover::after{opacity:1}
+    .bar-label{font-size:.67rem;color:var(--muted);text-align:center;white-space:nowrap}
+    .donut-wrap{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+    .donut-legend{display:flex;flex-direction:column;gap:.6rem}
+    .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem}
+    .legend-dot{inline-size:10px;block-size:10px;border-radius:3px;flex-shrink:0}
+
+    /* ─── SECTION HEADER ─── */
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-block-end:1.25rem;flex-wrap:wrap;gap:.75rem}
+    .section-head-left h2{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600}
+    .section-head-left p{font-size:.8rem;color:var(--muted);margin-block-start:.15rem}
+
+    /* ─── TABLE ─── */
+    .table-wrap{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
+    .table-toolbar{padding:1rem 1.25rem;border-block-end:1px solid var(--border);display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;background:var(--white)}
+    .table-search{flex:1;min-inline-size:170px;display:flex;align-items:center;gap:.5rem;background:var(--ivory);border-radius:50px;padding:.45rem 1rem}
+    .table-search input{background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.83rem;inline-size:100%}
+    .table-search i{color:var(--muted);font-size:.78rem;flex-shrink:0}
+    .filter-select{padding:.44rem .9rem;border:1.5px solid var(--border);border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.82rem;outline:none;cursor:pointer;transition:border-color .3s;background:var(--white);color:var(--charcoal)}
+    .filter-select:focus{border-color:var(--forest)}
+    .action-bar-btn{display:flex;align-items:center;gap:.4rem;padding:.44rem 1rem;border-radius:50px;border:none;font-family:'DM Sans',sans-serif;font-size:.81rem;font-weight:500;cursor:pointer;transition:all .3s}
+    .action-bar-btn.export{background:var(--forest-dim);color:var(--forest)}
+    .action-bar-btn.export:hover{background:var(--forest);color:#fff}
+    .action-bar-btn.danger{background:var(--rose-dim);color:var(--rose)}
+    .action-bar-btn.danger:hover{background:var(--rose);color:#fff}
+    table{inline-size:100%;border-collapse:collapse;font-size:.85rem}
+    thead th{padding:.8rem 1.25rem;text-align:start;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:var(--ivory);border-block-end:1px solid var(--border);white-space:nowrap}
+    thead th.sortable{cursor:pointer;user-select:none}
+    thead th.sortable:hover{color:var(--forest)}
+    tbody tr{border-block-end:1px solid var(--border);transition:background .15s}
+    tbody tr:last-child{border-block-end:none}
+    tbody tr:hover{background:rgba(45,90,69,.025)}
+    tbody td{padding:.88rem 1.25rem;vertical-align:middle}
+    .empty-state{padding:4rem 2rem;text-align:center;color:var(--muted)}
+    .empty-state i{font-size:2.5rem;margin-block-end:1rem;display:block;opacity:.3}
+    .empty-state strong{display:block;font-size:.95rem;color:var(--charcoal);margin-block-end:.35rem}
+    .empty-state p{font-size:.83rem}
+
+    /* ─── PILLS ─── */
+    .pill{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .72rem;border-radius:50px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+    .pill.green{background:var(--forest-dim);color:var(--forest)}
+    .pill.rose{background:var(--rose-dim);color:var(--rose)}
+    .pill.gold{background:var(--gold-dim);color:var(--gold)}
+    .pill.blue{background:var(--blue-dim);color:var(--blue)}
+    .pill.gray{background:var(--ivory);color:var(--muted)}
+
+    /* ─── AVATAR ─── */
+    .u-avatar{inline-size:32px;block-size:32px;border-radius:50%;background:var(--forest-dim);color:var(--forest);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.76rem;flex-shrink:0;text-transform:uppercase}
+
+    /* ─── ROW ACTIONS ─── */
+    .row-actions{display:flex;gap:.25rem;align-items:center}
+    .r-btn{background:none;border:none;cursor:pointer;inline-size:30px;block-size:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:.82rem;transition:all .2s;color:var(--muted)}
+    .r-btn.view:hover{background:var(--blue-dim);color:var(--blue)}
+    .r-btn.edit:hover{background:var(--gold-dim);color:var(--gold)}
+    .r-btn.del:hover{background:var(--rose-dim);color:var(--rose)}
+
+    /* ─── DETAIL MODAL ─── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal-box{background:var(--white);border-radius:20px;inline-size:100%;max-inline-size:580px;box-shadow:var(--shadow-lg);transform:scale(.9) translateY(20px);transition:transform .45s var(--spring);overflow:hidden;max-block-size:92vh;display:flex;flex-direction:column}
+    .modal-overlay.open .modal-box{transform:scale(1) translateY(0)}
+    .modal-head{padding:1.5rem 1.75rem;border-block-end:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .modal-head h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600}
+    .modal-close-btn{background:var(--ivory);border:none;border-radius:50%;inline-size:34px;block-size:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.88rem;color:var(--muted);transition:all .3s}
+    .modal-close-btn:hover{background:var(--rose-dim);color:var(--rose)}
+    .modal-body{padding:1.5rem 1.75rem;overflow-y:auto;flex:1}
+    .modal-section{margin-block-end:1.5rem}
+    .modal-section-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-block-end:.75rem;font-weight:600;display:flex;align-items:center;gap:.4rem}
+    .modal-section-title i{color:var(--forest)}
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+    .detail-cell{background:var(--ivory);border-radius:10px;padding:.75rem 1rem}
+    .detail-cell label{font-size:.69rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:block;margin-block-end:.2rem}
+    .detail-cell span{font-size:.88rem;font-weight:500}
+    .order-items-list{background:var(--ivory);border-radius:10px;overflow:hidden}
+    .order-item-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 1rem;border-block-end:1px solid rgba(0,0,0,.06);font-size:.85rem}
+    .order-item-row:last-child{border-block-end:none}
+    .modal-foot{padding:1.1rem 1.75rem;border-block-start:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:1rem;flex-wrap:wrap}
+    .modal-foot-total{display:flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:700}
+    .modal-foot-total span{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--forest)}
+    .status-select-inline{padding:.42rem .85rem;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.84rem;outline:none;cursor:pointer;transition:border-color .3s;background:var(--white);color:var(--charcoal)}
+    .status-select-inline:focus{border-color:var(--forest)}
+
+    /* ─── SETTINGS ─── */
+    .settings-section{max-inline-size:560px;margin-block-end:1.5rem}
+    .settings-card{background:var(--white);border-radius:var(--r);padding:1.75rem;box-shadow:var(--shadow-sm)}
+    .settings-card-title{font-size:.88rem;font-weight:600;margin-block-end:1.25rem;display:flex;align-items:center;gap:.5rem;color:var(--charcoal)}
+    .settings-card-title i{color:var(--forest);inline-size:18px}
+    .settings-row{display:flex;flex-direction:column;gap:.85rem}
+    .settings-info-grid{display:flex;flex-direction:column;gap:.4rem}
+    .settings-info-row{display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0;border-block-end:1px solid var(--border)}
+    .settings-info-row:last-child{border-block-end:none}
+    .settings-info-row span:first-child{color:var(--muted)}
+    .settings-info-row strong{color:var(--charcoal)}
+    .settings-danger{display:flex;gap:.75rem;flex-wrap:wrap;margin-block-start:.5rem}
+
+    /* ─── TOAST ─── */
+    .toast-container{position:fixed;inset-block-end:1.5rem;inset-inline-end:1.5rem;z-index:500;display:flex;flex-direction:column;gap:.5rem;align-items:flex-end;pointer-events:none}
+    .toast{background:var(--charcoal);color:#fff;padding:.65rem 1.2rem;border-radius:50px;font-size:.82rem;font-weight:500;display:flex;align-items:center;gap:.5rem;animation:toastIn .4s var(--spring),toastOut .4s ease 2.5s forwards;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+    .toast.success{background:var(--forest)}
+    .toast.error{background:#c0392b}
+    .toast.info{background:var(--gold)}
+    @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-inline-size:900px){
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0);box-shadow:4px 0 30px rgba(0,0,0,.2)}
+      .main{margin-inline-start:0}
+      .mobile-toggle{display:flex;align-items:center;justify-content:center}
+      .chart-grid{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .topbar-search{display:none}
+    }
+    @media(max-inline-size:600px){
+      .stats-grid{grid-template-columns:1fr}
+      .content{padding:1rem}
+      .topbar{padding:.85rem 1rem}
+      .detail-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ LOGIN ════ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-icon"><i class="fa-solid fa-seedling"></i></div>
+    <h1>Alegria Admin</h1>
+    <p>Panneau de gestion — accès restreint</p>
+    <div class="login-field">
+      <label>Identifiant</label>
+      <div class="input-wrap">
+        <i class="fa-regular fa-user"></i>
+        <input type="text" id="adminUser" placeholder="admin" autocomplete="username"/>
+      </div>
+    </div>
+    <div class="login-field">
+      <label>Mot de passe</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="adminPwd" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+    </div>
+    <button class="login-btn" id="loginAdminBtn">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> Accéder au panel
+    </button>
+    <p class="login-error" id="loginError">
+      <i class="fa-solid fa-triangle-exclamation"></i> Identifiants incorrects
+    </p>
+    <p class="login-hint">Par défaut : <strong>admin</strong> / <strong>alegria2025</strong></p>
+  </div>
+</div>
+
+<!-- ════ APP ════ -->
+<div class="app" id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <a class="sidebar-logo" href="#"><i class="fa-solid fa-seedling"></i> Alegria</a>
+      <p class="sidebar-subtitle">Administration</p>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Principal</p>
+      <button class="nav-item active" data-page="dashboard"><i class="fa-solid fa-chart-line"></i> Tableau de bord</button>
+      <button class="nav-item" data-page="orders"><i class="fa-solid fa-box"></i> Commandes <span class="nav-badge" id="pendingBadge" style="display:none">0</span></button>
+      <button class="nav-item" data-page="customers"><i class="fa-solid fa-users"></i> Clients</button>
+      <p class="nav-section-label">Catalogue</p>
+      <button class="nav-item" data-page="products"><i class="fa-solid fa-store"></i> Produits</button>
+      <p class="nav-section-label">Système</p>
+      <button class="nav-item" data-page="settings"><i class="fa-solid fa-gear"></i> Paramètres</button>
+      <a class="nav-item" href="index.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le site</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar"><i class="fa-solid fa-user-shield"></i></div>
+        <div>
+          <div class="sidebar-user-name">Administrateur</div>
+          <div class="sidebar-user-role">Alegria Flower's</div>
+        </div>
+        <button class="logout-btn" id="logoutBtn" title="Déconnexion"><i class="fa-solid fa-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn mobile-toggle" id="mobileToggle"><i class="fa-solid fa-bars"></i></button>
+        <div>
+          <div class="topbar-title" id="pageTitle">Tableau de bord</div>
+          <div class="topbar-date" id="currentDate"></div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="globalSearch" placeholder="Rechercher commande, client..."/>
+        </div>
+        <button class="icon-btn" id="refreshBtn" title="Actualiser"><i class="fa-solid fa-arrows-rotate"></i></button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-title"><i class="fa-solid fa-chart-bar"></i> Revenus des 7 derniers jours</div>
+            <div class="bar-chart" id="barChart"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title"><i class="fa-solid fa-chart-pie"></i> Statuts des commandes</div>
+            <div class="donut-wrap">
+              <svg width="120" height="120" viewBox="0 0 120 120" id="donutSvg" style="flex-shrink:0"></svg>
+              <div class="donut-legend" id="donutLegend"></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-head">
+          <div class="section-head-left"><h2>Commandes récentes</h2><p>Les 5 dernières commandes passées</p></div>
+          <button class="action-bar-btn export" onclick="showPage('orders')"><i class="fa-solid fa-eye"></i> Voir tout</button>
+        </div>
+        <div class="table-wrap" id="recentTable"></div>
+      </div>
+
+      <!-- ── ORDERS ── -->
+      <div class="page" id="page-orders">
+        <div class="section-head">
+          <div class="section-head-left"><h2>Toutes les commandes</h2><p id="ordersCount">Chargement...</p></div>
+          <button class="action-bar-btn export" onclick="exportCSV('orders')"><i class="fa-solid fa-file-csv"></i> Exporter CSV</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <div class="table-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="orderSearch" placeholder="ID, nom, email..."/></div>
+            <select class="filter-select" id="statusFilter">
+              <option value="">Tous les statuts</option>
+              <option>En attente</option><option>En préparation</option><option>Livré</option><option>Annulé</option>
+            </select>
+          </div>
+          <div id="ordersTableWrap"></div>
+        </div>
+      </div>
+
+      <!-- ── CUSTOMERS ── -->
+      <div class="page" id="page-customers">
+        <div class="section-head">
+          <div class="section-head-left"><h2>Clients inscrits</h2><p id="customersCount">Chargement...</p></div>
+          <button class="action-bar-btn export" onclick="exportCSV('customers')"><i class="fa-solid fa-file-csv"></i> Exporter CSV</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <div class="table-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="customerSearch" placeholder="Nom, email, téléphone..."/></div>
+          </div>
+          <div id="customersTableWrap"></div>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS ── -->
+      <div class="page" id="page-products">
+        <div class="section-head">
+          <div class="section-head-left"><h2>Catalogue produits</h2><p>Performance des ventes par article</p></div>
+        </div>
+        <div class="table-wrap"><div id="productsTableWrap"></div></div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div class="page" id="page-settings">
+        <div class="section-head"><div class="section-head-left"><h2>Paramètres</h2><p>Configuration du panel admin</p></div></div>
+        <div class="settings-section">
+          <div class="settings-card">
+            <div class="settings-card-title"><i class="fa-solid fa-key"></i> Changer le mot de passe admin</div>
+            <div class="settings-row">
+              <div class="login-field" style="margin:0"><label>Nouveau mot de passe</label><div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="newPwd" placeholder="Minimum 6 caractères"/></div></div>
+              <div class="login-field" style="margin:0"><label>Confirmer le mot de passe</label><div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="confirmPwd" placeholder="Répétez le mot de passe"/></div></div>
+              <button class="action-bar-btn export" style="inline-size:fit-content" onclick="changePwd()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-card">
+            <div class="settings-card-title"><i class="fa-solid fa-database"></i> Gestion des données</div>
+            <p style="font-size:.83rem;color:var(--muted);margin-block-end:1rem">Ces actions sont définitives et irréversibles.</p>
+            <div class="settings-danger">
+              <button class="action-bar-btn danger" onclick="clearData('orders')"><i class="fa-solid fa-trash"></i> Vider les commandes</button>
+              <button class="action-bar-btn danger" onclick="clearData('customers')"><i class="fa-solid fa-trash"></i> Vider les clients</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-card">
+            <div class="settings-card-title"><i class="fa-solid fa-circle-info"></i> Informations système</div>
+            <div class="settings-info-grid">
+              <div class="settings-info-row"><span>Version</span><strong>1.0.0</strong></div>
+              <div class="settings-info-row"><span>Boutique</span><strong>Alegria Shop Flower's</strong></div>
+              <div class="settings-info-row"><span>Localisation</span><strong>Lubumbashi, Haut-Katanga, RDC</strong></div>
+              <div class="settings-info-row"><span>Stockage</span><strong>LocalStorage (navigateur)</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle">Détail commande</h3>
+      <button class="modal-close-btn" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ════ CONFIG ════ */
+const ADMIN_USER = 'admin';
+const getAdminPwd = () => localStorage.getItem('alegria_admin_pwd') || 'alegria2025';
+const PRODUCTS_CATALOG = [
+  {id:1,name:'Bouquet Alegria',price:15.99,category:'rose'},
+  {id:2,name:'Roses Éternelles',price:5.99,category:'rose'},
+  {id:4,name:'Sunshine Bouquet',price:30.00,category:'mix'},
+  {id:5,name:'Fleurs Sauvages',price:19.00,category:'mix'},
+  {id:6,name:'Arrangement Luxe',price:25.00,category:'luxe'},
+  {id:7,name:'Rose Dorée',price:22.00,category:'luxe'},
+];
+
+/* ════ UTILS ════ */
+const $ = id => document.getElementById(id);
+const DB = {
+  getArr: k => { try { return JSON.parse(localStorage.getItem(k)||'[]'); } catch{ return []; } },
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v))
+};
+const fmt = v => '$' + Number(v).toFixed(2);
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmtDate = d => { try { return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); } catch{ return '—'; } };
+const fmtDateShort = d => { try { return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}); } catch{ return '—'; } };
+
+function toast(msg, type='success') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = {success:'check',error:'xmark',info:'circle-info'};
+  el.innerHTML = `<i class="fa-solid fa-${icons[type]||'check'}"></i> ${msg}`;
+  $('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+/* ════ LOGIN ════ */
+function doLogin() {
+  const u = $('adminUser').value.trim();
+  const p = $('adminPwd').value;
+  if (u === ADMIN_USER && p === getAdminPwd()) {
+    $('loginScreen').style.display = 'none';
+    $('app').classList.add('visible');
+    seedDemoData();
+    initDashboard();
+    updatePendingBadge();
+  } else {
+    $('loginError').style.display = 'flex';
+    $('adminPwd').value = '';
+    $('adminPwd').focus();
+    setTimeout(() => $('loginError').style.display='none', 3500);
+  }
+}
+$('loginAdminBtn').addEventListener('click', doLogin);
+['adminUser','adminPwd'].forEach(id => $(id).addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); }));
+$('logoutBtn').addEventListener('click', () => {
+  $('app').classList.remove('visible');
+  $('loginScreen').style.display = 'flex';
+  $('adminUser').value = ''; $('adminPwd').value = '';
+  $('adminUser').focus();
+});
+
+/* ════ NAVIGATION ════ */
+const PAGE_TITLES = { dashboard:'Tableau de bord', orders:'Commandes', customers:'Clients', products:'Produits', settings:'Paramètres' };
+const PAGE_RENDERERS = { dashboard:renderDashboard, orders:renderOrders, customers:renderCustomers, products:renderProducts, settings:()=>{} };
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('active'));
+  $(`page-${name}`)?.classList.add('active');
+  document.querySelectorAll(`[data-page="${name}"]`).forEach(n => n.classList.add('active'));
+  $('pageTitle').textContent = PAGE_TITLES[name] || name;
+  PAGE_RENDERERS[name]?.();
+  if (window.innerWidth <= 900) $('sidebar').classList.remove('open');
+}
+window.showPage = showPage;
+
+document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+
+// Set date
+$('currentDate').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+/* ════ DATA ════ */
+const getOrders   = () => DB.getArr('alegria_orders');
+const getCustomers = () => DB.getArr('alegria_users');
+
+function updatePendingBadge() {
+  const n = getOrders().filter(o => o.status === 'En attente').length;
+  const badge = $('pendingBadge');
+  badge.textContent = n;
+  badge.style.display = n ? 'inline-block' : 'none';
+}
+
+/* ════ STATUS ════ */
+function statusPill(s) {
+  const map = {
+    'En attente':  ['gold',  'clock'],
+    'En préparation': ['blue','gear'],
+    'Livré':       ['green', 'check'],
+    'Annulé':      ['rose',  'xmark'],
+  };
+  const [cls,ico] = map[s] || ['gray','circle'];
+  return `<span class="pill ${cls}"><i class="fa-solid fa-${ico}"></i> ${esc(s)}</span>`;
+}
+
+/* ════ DASHBOARD ════ */
+function initDashboard() { renderDashboard(); }
+
+function renderDashboard() {
+  const orders = getOrders();
+  const customers = getCustomers();
+  const totalRev = orders.reduce((s,o) => s + (o.total||0), 0);
+  const pending  = orders.filter(o => o.status === 'En attente').length;
+  const todayStr = new Date().toISOString().slice(0,10);
+  const todayOrders = orders.filter(o => o.date?.startsWith(todayStr)).length;
+
+  // Stats
+  $('statsGrid').innerHTML = [
+    {icon:'fa-box',     cls:'green', lbl:"Commandes totales", val:orders.length,    sub:`${pending} en attente`, page:'orders'},
+    {icon:'fa-users',   cls:'blue',  lbl:"Clients inscrits",  val:customers.length, sub:'Comptes actifs',         page:'customers'},
+    {icon:'fa-dollar-sign',cls:'gold',lbl:"Revenus totaux",   val:fmt(totalRev),    sub:'Toutes commandes',        page:'orders'},
+    {icon:'fa-calendar-day',cls:'rose',lbl:"Aujourd'hui",     val:todayOrders,      sub:'Commandes du jour',       page:'orders'},
+  ].map(s => `
+    <div class="stat-card" onclick="showPage('${s.page}')">
+      <div class="stat-icon ${s.cls}"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="stat-info">
+        <span class="stat-value">${s.val}</span>
+        <span class="stat-label">${s.lbl}</span>
+        <span class="stat-sub"><i class="fa-solid fa-circle-info" style="font-size:.62rem;opacity:.5"></i>${s.sub}</span>
+      </div>
+    </div>`).join('');
+
+  // Bar chart — last 7 days
+  const DAY_LABELS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const vals = Array.from({length:7},(_,i) => {
+    const d = new Date(); d.setDate(d.getDate()-(6-i));
+    const ds = d.toISOString().slice(0,10);
+    return orders.filter(o => o.date?.startsWith(ds)).reduce((s,o) => s+(o.total||0),0);
+  });
+  const maxVal = Math.max(...vals, 1);
+  const todayIdx = 6;
+  $('barChart').innerHTML = vals.map((v,i) => {
+    const h = Math.max(6, Math.round((v/maxVal)*120));
+    const d = new Date(); d.setDate(d.getDate()-(6-i));
+    const lbl = i === todayIdx ? 'Auj.' : DAY_LABELS[d.getDay()===0?6:d.getDay()-1];
+    return `<div class="bar-group">
+      <div class="bar" style="block-size:${h}px;${i===todayIdx?'background:linear-gradient(to top,var(--rose),var(--blush))':''}" data-val="${fmt(v)}"></div>
+      <span class="bar-label">${lbl}</span>
+    </div>`;
+  }).join('');
+
+  // Donut chart
+  const statusColors = {'En attente':'#b8975a','En préparation':'#3b82f6','Livré':'#2d5a45','Annulé':'#c97a96'};
+  const donutData = Object.entries(statusColors).map(([lbl,color]) => ({
+    lbl, color, val: orders.filter(o => o.status===lbl).length
+  })).filter(d => d.val > 0);
+  const totalDonut = donutData.reduce((s,d)=>s+d.val,0)||1;
+  let offset = 0;
+  $('donutSvg').innerHTML = donutData.length
+    ? donutData.map(d => {
+        const pct=d.val/totalDonut, r=45,cx=60,cy=60,sw=18;
+        const dash=pct*2*Math.PI*r, gap=(1-pct)*2*Math.PI*r;
+        const rot=-90+offset*360; offset+=pct;
+        return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="${sw}" stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}" transform="rotate(${rot},${cx},${cy})"/>`;
+      }).join('')
+    : `<circle cx="60" cy="60" r="45" fill="none" stroke="var(--border)" stroke-width="18"/><text x="60" y="65" text-anchor="middle" font-size="11" fill="var(--muted)">Aucune</text>`;
+  $('donutLegend').innerHTML = donutData.length
+    ? donutData.map(d=>`<div class="legend-item"><span class="legend-dot" style="background:${d.color}"></span>${esc(d.lbl)} <strong>(${d.val})</strong></div>`).join('')
+    : '<span style="font-size:.8rem;color:var(--muted)">Aucune donnée</span>';
+
+  // Recent orders table
+  const recent = [...getOrders()].reverse().slice(0,5);
+  $('recentTable').innerHTML = recent.length ? buildOrdersTable(recent) : emptyState('fa-box-open','Aucune commande','Passez une commande depuis la boutique pour la voir ici.');
+  updatePendingBadge();
+}
+
+/* ════ ORDERS ════ */
+function buildOrdersTable(list) {
+  return `<table>
+    <thead><tr>
+      <th>Référence</th><th>Client</th><th>Articles</th><th>Total</th><th>Date</th><th>Statut</th><th style="text-align:end">Actions</th>
+    </tr></thead>
+    <tbody>${list.map(o => `<tr>
+      <td><code style="font-size:.73rem;background:var(--ivory);padding:.2rem .55rem;border-radius:6px;font-family:monospace">${esc(o.id)}</code></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <div class="u-avatar">${(o.userName||'?')[0]}</div>
+          <div>
+            <div style="font-weight:500;font-size:.85rem;line-height:1.2">${esc(o.userName||'—')}</div>
+            <div style="font-size:.74rem;color:var(--muted)">${esc(o.userEmail||'')}</div>
+          </div>
+        </div>
+      </td>
+      <td style="font-size:.83rem;color:var(--muted)">${(o.items||[]).length} art.</td>
+      <td><strong style="color:var(--forest)">${fmt(o.total||0)}</strong></td>
+      <td style="font-size:.78rem;color:var(--muted);white-space:nowrap">${fmtDateShort(o.date)}</td>
+      <td>${statusPill(o.status||'En attente')}</td>
+      <td>
+        <div class="row-actions" style="justify-content:flex-end">
+          <button class="r-btn view" onclick="openOrderDetail('${esc(o.id)}')" title="Voir le détail"><i class="fa-solid fa-eye"></i></button>
+          <button class="r-btn del" onclick="deleteOrder('${esc(o.id)}')" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+function renderOrders() {
+  let list = getOrders().slice().reverse();
+  const q = $('orderSearch').value.toLowerCase().trim();
+  const sf = $('statusFilter').value;
+  if (q) list = list.filter(o =>
+    o.id?.toLowerCase().includes(q) ||
+    o.userName?.toLowerCase().includes(q) ||
+    o.userEmail?.toLowerCase().includes(q)
+  );
+  if (sf) list = list.filter(o => o.status === sf);
+  $('ordersCount').textContent = `${list.length} commande(s)`;
+  $('ordersTableWrap').innerHTML = list.length ? buildOrdersTable(list) : emptyState('fa-box-open','Aucune commande trouvée','Essayez de modifier vos filtres.');
+  updatePendingBadge();
+}
+$('orderSearch').addEventListener('input', renderOrders);
+$('statusFilter').addEventListener('change', renderOrders);
+
+/* ════ ORDER DETAIL MODAL ════ */
+function openOrderDetail(id) {
+  const o = getOrders().find(x => x.id === id);
+  if (!o) return;
+  $('modalTitle').textContent = `Commande ${o.id}`;
+  $('modalBody').innerHTML = `
+    <div class="modal-section">
+      <div class="modal-section-title"><i class="fa-solid fa-user"></i> Informations client</div>
+      <div class="detail-grid">
+        <div class="detail-cell"><label>Nom complet</label><span>${esc(o.userName||'—')}</span></div>
+        <div class="detail-cell"><label>Email</label><span>${esc(o.userEmail||'—')}</span></div>
+        <div class="detail-cell"><label>Téléphone</label><span>${esc(o.userPhone||'Non renseigné')}</span></div>
+        <div class="detail-cell"><label>Date commande</label><span>${fmtDate(o.date)}</span></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title"><i class="fa-solid fa-box"></i> Articles commandés</div>
+      <div class="order-items-list">
+        ${(o.items||[]).map(item=>`
+          <div class="order-item-row">
+            <span>${esc(item.name)} <span style="color:var(--muted);font-size:.82rem">× ${item.qty}</span></span>
+            <strong>${fmt((item.price||0)*(item.qty||1))}</strong>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title"><i class="fa-solid fa-tag"></i> Statut de la commande</div>
+      <select class="status-select-inline" onchange="updateOrderStatus('${esc(o.id)}',this.value)">
+        ${['En attente','En préparation','Livré','Annulé'].map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>`;
+  $('modalFoot').innerHTML = `
+    <div class="modal-foot-total">Total commande : <span>${fmt(o.total||0)}</span></div>
+    <button class="action-bar-btn danger" onclick="deleteOrder('${esc(o.id)}',true)"><i class="fa-solid fa-trash"></i> Supprimer</button>`;
+  $('orderModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+window.openOrderDetail = openOrderDetail;
+
+function closeModal() { $('orderModal').classList.remove('open'); document.body.style.overflow=''; }
+$('modalCloseBtn').addEventListener('click', closeModal);
+$('orderModal').addEventListener('click', e => { if(e.target===$('orderModal')) closeModal(); });
+
+function updateOrderStatus(id, status) {
+  const orders = getOrders();
+  const o = orders.find(x => x.id===id);
+  if (!o) return;
+  o.status = status;
+  DB.set('alegria_orders', orders);
+  renderDashboard(); renderOrders();
+  toast(`Statut mis à jour → ${status}`);
+}
+window.updateOrderStatus = updateOrderStatus;
+
+function deleteOrder(id, fromModal=false) {
+  if (!confirm('Supprimer cette commande définitivement ?')) return;
+  DB.set('alegria_orders', getOrders().filter(o => o.id!==id));
+  if (fromModal) closeModal();
+  renderDashboard(); renderOrders();
+  toast('Commande supprimée','error');
+}
+window.deleteOrder = deleteOrder;
+
+/* ════ CUSTOMERS ════ */
+function renderCustomers() {
+  const q = $('customerSearch').value.toLowerCase().trim();
+  let users = getCustomers();
+  if (q) users = users.filter(u => `${u.prenom} ${u.nom} ${u.email} ${u.phone||''}`.toLowerCase().includes(q));
+  $('customersCount').textContent = `${users.length} client(s)`;
+  const orders = getOrders();
+  if (!users.length) {
+    $('customersTableWrap').innerHTML = emptyState('fa-users','Aucun client inscrit','Les clients apparaîtront ici après leur inscription sur le site.');
+    return;
+  }
+  $('customersTableWrap').innerHTML = `<table>
+    <thead><tr>
+      <th>Client</th><th>Email</th><th>Téléphone</th><th>Commandes</th><th>Total dépensé</th><th>Inscrit le</th><th style="text-align:end">Actions</th>
+    </tr></thead>
+    <tbody>${users.map(u => {
+      const uOrders = orders.filter(o => o.userId===u.id);
+      const spent = uOrders.reduce((s,o)=>s+(o.total||0),0);
+      return `<tr>
+        <td><div style="display:flex;align-items:center;gap:.65rem">
+          <div class="u-avatar">${u.prenom?.[0]||'?'}</div>
+          <div style="font-weight:500;font-size:.85rem">${esc(u.prenom)} ${esc(u.nom)}</div>
+        </div></td>
+        <td style="font-size:.84rem">${esc(u.email)}</td>
+        <td style="font-size:.84rem">${esc(u.phone||'—')}</td>
+        <td><span class="pill ${uOrders.length?'green':'gray'}">${uOrders.length} cmd</span></td>
+        <td><strong style="color:var(--forest)">${fmt(spent)}</strong></td>
+        <td style="font-size:.77rem;color:var(--muted)">${fmtDateShort(u.createdAt)}</td>
+        <td><div class="row-actions" style="justify-content:flex-end">
+          <button class="r-btn del" onclick="deleteCustomer('${esc(u.id)}')" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+$('customerSearch').addEventListener('input', renderCustomers);
+
+function deleteCustomer(id) {
+  if (!confirm('Supprimer ce client définitivement ?')) return;
+  DB.set('alegria_users', getCustomers().filter(u => u.id!==id));
+  renderCustomers(); renderDashboard();
+  toast('Client supprimé','error');
+}
+window.deleteCustomer = deleteCustomer;
+
+/* ════ PRODUCTS ════ */
+function renderProducts() {
+  const orders = getOrders();
+  const sales = {};
+  orders.forEach(o => (o.items||[]).forEach(i => { sales[i.name] = (sales[i.name]||0) + (i.qty||1); }));
+  const catMap = {rose:'Roses',mix:'Mix floral',luxe:'Luxe'};
+  const catCls = {rose:'rose',mix:'blue',luxe:'gold'};
+  $('productsTableWrap').innerHTML = `<table>
+    <thead><tr><th>Produit</th><th>Catégorie</th><th>Prix unitaire</th><th>Unités vendues</th><th>Revenus générés</th></tr></thead>
+    <tbody>${PRODUCTS_CATALOG.map(p => {
+      const qty = sales[p.name]||0;
+      return `<tr>
+        <td><strong>${esc(p.name)}</strong></td>
+        <td><span class="pill ${catCls[p.category]||'gray'}">${catMap[p.category]||p.category}</span></td>
+        <td>${fmt(p.price)}</td>
+        <td><span class="pill ${qty>0?'green':'gray'}">${qty} vendu(s)</span></td>
+        <td><strong style="color:var(--forest)">${fmt(p.price*qty)}</strong></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+/* ════ EXPORT CSV ════ */
+function exportCSV(type) {
+  let rows = [], filename = '';
+  if (type === 'orders') {
+    rows = [['ID','Client','Email','Téléphone','Articles','Total','Date','Statut']];
+    getOrders().forEach(o => rows.push([
+      o.id, o.userName||'', o.userEmail||'', o.userPhone||'',
+      (o.items||[]).map(i=>`${i.name}×${i.qty}`).join(';'),
+      fmt(o.total||0), fmtDate(o.date), o.status||''
+    ]));
+    filename = 'alegria_commandes.csv';
+  } else {
+    rows = [['ID','Prénom','Nom','Email','Téléphone','Inscrit le']];
+    getCustomers().forEach(u => rows.push([u.id,u.prenom,u.nom,u.email,u.phone||'',fmtDate(u.createdAt)]));
+    filename = 'alegria_clients.csv';
+  }
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = filename; a.click();
+  toast(`Fichier ${filename} téléchargé`);
+}
+window.exportCSV = exportCSV;
+
+/* ════ SETTINGS ════ */
+function changePwd() {
+  const np = $('newPwd').value, cp = $('confirmPwd').value;
+  if (!np) { toast('Entrez un nouveau mot de passe','error'); return; }
+  if (np.length < 6) { toast('Minimum 6 caractères requis','error'); return; }
+  if (np !== cp) { toast('Les mots de passe ne correspondent pas','error'); return; }
+  localStorage.setItem('alegria_admin_pwd', np);
+  $('newPwd').value = ''; $('confirmPwd').value = '';
+  toast('Mot de passe mis à jour avec succès');
+}
+window.changePwd = changePwd;
+
+function clearData(type) {
+  const label = type==='orders' ? 'toutes les commandes' : 'tous les clients';
+  if (!confirm(`Voulez-vous vraiment supprimer ${label} ? Cette action est irréversible.`)) return;
+  DB.set(`alegria_${type}`, []);
+  renderDashboard(); updatePendingBadge();
+  toast(`Données "${type}" supprimées`, 'error');
+}
+window.clearData = clearData;
+
+/* ════ GLOBAL SEARCH ════ */
+$('globalSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (!q) return;
+  const inOrders = getOrders().some(o =>
+    o.id?.toLowerCase().includes(q) || o.userName?.toLowerCase().includes(q) || o.userEmail?.toLowerCase().includes(q)
+  );
+  if (inOrders) {
+    showPage('orders');
+    setTimeout(() => { $('orderSearch').value = this.value; renderOrders(); }, 80);
+  } else {
+    const inCustomers = getCustomers().some(u =>
+      `${u.prenom} ${u.nom} ${u.email}`.toLowerCase().includes(q)
+    );
+    if (inCustomers) {
+      showPage('customers');
+      setTimeout(() => { $('customerSearch').value = this.value; renderCustomers(); }, 80);
+    }
+  }
+});
+
+/* ════ MOBILE SIDEBAR ════ */
+$('mobileToggle').addEventListener('click', () => $('sidebar').classList.toggle('open'));
+document.addEventListener('click', e => {
+  const sb = $('sidebar');
+  if (window.innerWidth<=900 && sb.classList.contains('open') && !sb.contains(e.target) && e.target!==$('mobileToggle'))
+    sb.classList.remove('open');
+});
+
+/* ════ REFRESH ════ */
+$('refreshBtn').addEventListener('click', () => {
+  const active = document.querySelector('.nav-item.active[data-page]')?.dataset.page || 'dashboard';
+  showPage(active);
+  const icon = $('refreshBtn').querySelector('i');
+  icon.style.animation='spin .6s linear';
+  setTimeout(()=>icon.style.animation='',700);
+  toast('Actualisé');
+});
+
+/* ════ EMPTY STATE HELPER ════ */
+function emptyState(icon, title, text) {
+  return `<div class="empty-state"><i class="fa-solid ${icon}"></i><strong>${title}</strong><p>${text}</p></div>`;
+}
+
+/* ════ SPIN ANIMATION ════ */
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(styleEl);
+
+/* ════ DEMO DATA SEED ════ */
+function seedDemoData() {
+  if (getOrders().length > 0) return; // already has data
+  const now = Date.now();
+  if (!getCustomers().length) {
+    DB.set('alegria_users', [
+      {id:'USR-001',prenom:'Marie',nom:'Kabila',email:'marie@demo.cd',phone:'+243 891 234 567',pwd:'demo',createdAt:new Date(now-864e5*5).toISOString()},
+      {id:'USR-002',prenom:'Patrick',nom:'Mwamba',email:'patrick@demo.cd',phone:'+243 971 345 678',pwd:'demo',createdAt:new Date(now-864e5*3).toISOString()},
+      {id:'USR-003',prenom:'Sophie',nom:'Katanga',email:'sophie@demo.cd',phone:'+243 812 456 789',pwd:'demo',createdAt:new Date(now-864e5*1).toISOString()},
+    ]);
+  }
+  DB.set('alegria_orders', [
+    {id:'CMD-2025-001',userId:'USR-001',userName:'Marie Kabila',userEmail:'marie@demo.cd',userPhone:'+243 891 234 567',items:[{name:'Bouquet Alegria',qty:2,price:15.99},{name:'Roses Éternelles',qty:1,price:5.99}],total:37.97,date:new Date(now-864e5*4).toISOString(),status:'Livré'},
+    {id:'CMD-2025-002',userId:'USR-002',userName:'Patrick Mwamba',userEmail:'patrick@demo.cd',userPhone:'+243 971 345 678',items:[{name:'Arrangement Luxe',qty:1,price:25.00}],total:25.00,date:new Date(now-864e5*2).toISOString(),status:'En préparation'},
+    {id:'CMD-2025-003',userId:'USR-003',userName:'Sophie Katanga',userEmail:'sophie@demo.cd',userPhone:'+243 812 456 789',items:[{name:'Rose Dorée',qty:1,price:22.00},{name:'Fleurs Sauvages',qty:1,price:19.00}],total:41.00,date:new Date(now-864e5*1).toISOString(),status:'En attente'},
+    {id:'CMD-2025-004',userId:'USR-001',userName:'Marie Kabila',userEmail:'marie@demo.cd',userPhone:'+243 891 234 567',items:[{name:'Sunshine Bouquet',qty:1,price:30.00}],total:30.00,date:new Date(now-3600e3*3).toISOString(),status:'En attente'},
+  ]);
+}
+</script>
+</body>
+</html>
