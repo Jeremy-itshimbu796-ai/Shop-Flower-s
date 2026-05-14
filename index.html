@@ -3,723 +3,298 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Alegria Shop Flower's</title>
+  <title>Alegria Shop Flower's – Lubumbashi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
-      --cream: #faf7f2;
-      --ivory: #f2ede4;
-      --forest: #2d5a45;
-      --forest-light: #3d7a5f;
-      --blush: #e8b4c4;
-      --rose: #c97a96;
-      --gold: #b8975a;
-      --gold-light: #d4af72;
-      --charcoal: #1a1a1a;
-      --muted: #6b6460;
-      --white: #ffffff;
-      --card-shadow: 0 20px 60px rgba(0,0,0,0.10);
-      --r: 4px;
-      --transition: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      --cream: #faf7f2; --ivory: #f2ede4;
+      --forest: #2d5a45; --forest-light: #3d7a5f;
+      --blush: #e8b4c4; --rose: #c97a96;
+      --gold: #b8975a; --gold-light: #d4af72;
+      --charcoal: #1a1a1a; --muted: #6b6460; --white: #fff;
+      --shadow: 0 20px 60px rgba(0,0,0,.10);
+      --ease: cubic-bezier(.25,.46,.45,.94);
+      --spring: cubic-bezier(.34,1.56,.64,1);
     }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.7;overflow-x:hidden}
+    ::-webkit-scrollbar{inline-size:5px}::-webkit-scrollbar-track{background:var(--ivory)}::-webkit-scrollbar-thumb{background:var(--forest);border-radius:3px}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── HEADER ── */
+    .site-header{position:fixed;inset:0 0 auto;z-index:100;transition:all .5s ease}
+    .site-header.scrolled{background:rgba(250,247,242,.97);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(0,0,0,.07),0 6px 28px rgba(0,0,0,.06)}
+    .header-inner{max-inline-size:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;font-style:italic;color:var(--forest);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:opacity .3s}
+    .logo:hover{opacity:.8}
+    .nav-links{display:flex;align-items:center;gap:.4rem;list-style:none}
+    .nav-links a{text-decoration:none;font-size:.85rem;font-weight:500;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;padding:.45rem .9rem;border-radius:50px;transition:all .3s}
+    .nav-links a:hover{color:var(--forest);background:rgba(45,90,69,.08)}
+    .header-actions{display:flex;align-items:center;gap:.65rem}
+    .cart-btn{display:flex;align-items:center;gap:.5rem;background:var(--forest);color:#fff;border:none;border-radius:50px;padding:.6rem 1.2rem;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.85rem;cursor:pointer;transition:all .3s}
+    .cart-btn:hover{background:var(--forest-light);transform:translateY(-1px)}
+    .cart-badge{background:var(--rose);color:#fff;border-radius:50%;inline-size:20px;block-size:20px;font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;min-inline-size:20px;transition:transform .3s var(--spring)}
+    .cart-badge.pop{transform:scale(1.4)}
+    .user-btn{display:flex;align-items:center;gap:.45rem;border:1.5px solid rgba(0,0,0,.12);background:transparent;border-radius:50px;padding:.55rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;transition:all .3s;color:var(--charcoal)}
+    .user-btn:hover{border-color:var(--forest);color:var(--forest)}
+    .burger{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--charcoal);padding:.3rem;inline-size:38px;block-size:38px;border-radius:50%;transition:background .3s}
+    .burger:hover{background:var(--ivory)}
+    .mobile-nav{display:none;position:fixed;inset:0;background:var(--cream);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mobile-nav.open{display:flex;animation:fadeIn .3s ease}
+    .mobile-nav a{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;text-decoration:none;color:var(--charcoal);transition:color .3s}
+    .mobile-nav a:hover{color:var(--forest)}
+    .mobile-close{position:absolute;inset-block-start:1.5rem;inset-inline-end:2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted)}
 
-    html { scroll-behavior: smooth; }
+    /* ── HERO ── */
+    .hero{min-block-size:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+    .hero-left{background:var(--ivory);display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2}
+    .hero-eyebrow{font-size:.73rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-block-end:1.5rem;display:flex;align-items:center;gap:.75rem;opacity:0;animation:slideUp .7s var(--ease) .2s forwards}
+    .hero-eyebrow::before{content:'';inline-size:36px;block-size:1px;background:var(--rose)}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,4.8rem);font-weight:300;line-height:1.1;margin-block-end:1.5rem;opacity:0;animation:slideUp .7s var(--ease) .35s forwards}
+    .hero h1 em{font-style:italic;color:var(--forest)}
+    .hero-desc{font-size:1rem;color:var(--muted);max-inline-size:400px;margin-block-end:2.5rem;font-weight:300;opacity:0;animation:slideUp .7s var(--ease) .5s forwards}
+    .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:slideUp .7s var(--ease) .65s forwards}
+    .btn-primary{background:var(--forest);color:#fff;padding:.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:500;font-size:.88rem;transition:all .35s var(--ease);border:2px solid var(--forest);display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;font-family:'DM Sans',sans-serif}
+    .btn-primary:hover{background:transparent;color:var(--forest);transform:translateY(-2px)}
+    .btn-outline{background:transparent;color:var(--charcoal);padding:.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:500;font-size:.88rem;transition:all .35s;border:2px solid rgba(0,0,0,.14);display:inline-flex;align-items:center;gap:.5rem}
+    .btn-outline:hover{border-color:var(--forest);color:var(--forest)}
+    .hero-stats{display:flex;gap:2rem;margin-block-start:3rem;padding-block-start:2rem;border-block-start:1px solid rgba(0,0,0,.08);opacity:0;animation:slideUp .7s var(--ease) .8s forwards}
+    .stat-number{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--forest);display:block}
+    .stat-label{font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .hero-right{position:relative;overflow:hidden}
+    .hero-right img{inline-size:100%;block-size:100%;object-fit:cover;transition:transform 10s ease;transform:scale(1.05)}
+    .hero-right:hover img{transform:scale(1)}
+    .hero-tag{position:absolute;inset-block-end:2.5rem;inset-inline-start:-1rem;background:#fff;border-radius:14px;padding:1rem 1.5rem;box-shadow:var(--shadow);display:flex;align-items:center;gap:1rem;animation:floatCard 4s ease-in-out infinite,slideRight .8s var(--spring) 1s both}
+    @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes slideRight{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+    .hero-tag-icon{inline-size:44px;block-size:44px;border-radius:10px;background:var(--ivory);display:flex;align-items:center;justify-content:center;color:var(--forest);font-size:1.3rem}
+    .hero-tag-text strong{display:block;font-size:.88rem}
+    .hero-tag-text span{font-size:.75rem;color:var(--muted)}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--charcoal);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+    /* ── MARQUEE ── */
+    .marquee-section{background:var(--forest);color:#fff;padding:.9rem 0;overflow:hidden}
+    .marquee-track{display:flex;gap:3rem;inline-size:max-content;animation:marquee 20s linear infinite}
+    .marquee-section:hover .marquee-track{animation-play-state:paused}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .marquee-item{white-space:nowrap;font-size:.78rem;text-transform:uppercase;letter-spacing:.15em;opacity:.85;display:flex;align-items:center;gap:1rem}
+    .marquee-dot{inline-size:4px;block-size:4px;border-radius:50%;background:var(--gold-light);flex-shrink:0}
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { inline-size: 6px; }
-    ::-webkit-scrollbar-track { background: var(--ivory); }
-    ::-webkit-scrollbar-thumb { background: var(--forest); border-radius: 3px; }
+    /* ── SECTIONS ── */
+    .section{padding:6rem 2rem}
+    .container{max-inline-size:1280px;margin:auto}
+    .section-label{font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-block-end:.75rem}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.2;margin-block-end:.5rem}
+    .section-title em{font-style:italic;color:var(--forest)}
+    .section-sub{color:var(--muted);font-size:.93rem;font-weight:300;max-inline-size:500px}
+    .section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-block-end:3rem;flex-wrap:wrap;gap:1.5rem}
 
-    /* ══════════ HEADER ══════════ */
-    .site-header {
-      position: fixed; inset-block-start: 0; inset-inline-start: 0; inset-inline-end: 0; z-index: 100;
-      transition: all 0.5s ease;
-    }
-    .site-header.scrolled {
-      background: rgba(250,247,242,0.97);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 4px 24px rgba(0,0,0,0.06);
-    }
-    .header-inner {
-      max-inline-size: 1280px; margin: auto;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 2rem;
-    }
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem; font-weight: 600; font-style: italic;
-      color: var(--forest);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .logo-icon { font-size: 1.4rem; }
+    /* ── FILTERS ── */
+    .filters{display:flex;gap:.5rem;flex-wrap:wrap}
+    .filter-btn{padding:.4rem 1rem;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--muted);transition:all .3s}
+    .filter-btn.active,.filter-btn:hover{background:var(--forest);color:#fff;border-color:var(--forest)}
 
-    .nav-links {
-      display: flex; align-items: center; gap: 0.5rem;
-      list-style: none;
-    }
-    .nav-links a {
-      text-decoration: none; font-size: 0.875rem; font-weight: 500;
-      color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase;
-      padding: 0.5rem 0.9rem;
-      border-radius: 50px;
-      transition: all 0.3s;
-    }
-    .nav-links a:hover { color: var(--forest); background: rgba(45,90,69,0.08); }
+    /* ── PRODUCT CARDS ── */
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.5rem}
+    .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .45s var(--spring),box-shadow .45s ease;cursor:pointer;position:relative;opacity:0;transform:translateY(24px)}
+    .product-card.visible{opacity:1;transform:translateY(0)}
+    .product-card:hover{transform:translateY(-10px) scale(1.01);box-shadow:0 28px 56px rgba(0,0,0,.15)}
+    .product-img-wrap{position:relative;overflow:hidden;block-size:260px;background:var(--ivory)}
+    .product-img-wrap img{inline-size:100%;block-size:100%;object-fit:cover;transition:transform .65s var(--ease)}
+    .product-card:hover .product-img-wrap img{transform:scale(1.09)}
+    .product-badge{position:absolute;inset-block-start:1rem;inset-inline-start:1rem;color:#fff;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .75rem;border-radius:50px}
+    .product-badge.popular{background:var(--gold)}
+    .product-badge.new{background:var(--rose)}
+    .quick-add{position:absolute;inset-block-end:1rem;inset-inline-start:50%;transform:translateX(-50%) translateY(50px);white-space:nowrap;background:var(--charcoal);color:#fff;padding:.6rem 1.25rem;border-radius:50px;font-size:.82rem;font-weight:500;border:none;cursor:pointer;transition:all .4s var(--spring);opacity:0}
+    .product-card:hover .quick-add{opacity:1;transform:translateX(-50%) translateY(0)}
+    .wishlist-btn{position:absolute;inset-block-start:1rem;inset-inline-end:1rem;background:#fff;border:none;border-radius:50%;inline-size:36px;block-size:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:all .3s var(--spring);opacity:0;transform:scale(.8)}
+    .product-card:hover .wishlist-btn{opacity:1;transform:scale(1)}
+    .wishlist-btn.liked{opacity:1;color:var(--rose)}
+    .wishlist-btn:hover{transform:scale(1.15)}
+    .product-body{padding:1.2rem 1.25rem 1.5rem}
+    .product-category{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-block-end:.3rem}
+    .product-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-block-end:.75rem;line-height:1.3}
+    .product-footer{display:flex;justify-content:space-between;align-items:center}
+    .product-price{font-size:1.1rem;font-weight:600;color:var(--forest)}
+    .product-rating{font-size:.76rem;color:var(--gold);margin-block-start:.15rem}
+    .add-btn{inline-size:38px;block-size:38px;border-radius:50%;background:var(--forest);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s var(--spring)}
+    .add-btn:hover{background:var(--forest-light);transform:scale(1.15) rotate(90deg)}
+    .add-btn:active{transform:scale(.92)}
 
-    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    /* ── ABOUT ── */
+    .about-section{background:var(--ivory)}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .about-visual{position:relative}
+    .about-visual img{inline-size:100%;border-radius:12px;display:block;box-shadow:var(--shadow)}
+    .about-accent{position:absolute;inset-block-end:-2rem;inset-inline-end:-2rem;inline-size:200px;block-size:200px;background:var(--blush);border-radius:12px;z-index:-1;animation:pulse 4s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+    .about-badge{position:absolute;inset-block-start:2rem;inset-inline-start:-2rem;background:var(--forest);color:#fff;border-radius:12px;padding:1.25rem 1.5rem;box-shadow:var(--shadow)}
+    .about-badge-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:600;display:block;line-height:1}
+    .about-badge-txt{font-size:.76rem;opacity:.85}
+    .about-text p{color:var(--muted);margin-block-end:1.25rem;font-weight:300;line-height:1.8}
+    .feature-list{list-style:none;margin:1.75rem 0;display:flex;flex-direction:column;gap:.85rem}
+    .feature-list li{display:flex;align-items:center;gap:.75rem;font-size:.9rem}
+    .feature-list li i{color:var(--gold);font-size:.75rem;inline-size:16px}
 
-    .cart-btn {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--forest); color: var(--white);
-      border: none; border-radius: 50px;
-      padding: 0.6rem 1.25rem;
-      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.875rem;
-      cursor: pointer; transition: var(--transition);
-      position: relative;
-    }
-    .cart-btn:hover { background: var(--forest-light); transform: translateY(-1px); }
-    .cart-badge {
-      background: var(--rose); color: white;
-      border-radius: 50%; inline-size: 20px; block-size: 20px;
-      font-size: 0.7rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      min-inline-size: 20px;
-    }
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+    .testimonial-card{background:#fff;border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:all .4s var(--ease)}
+    .testimonial-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+    .stars{color:var(--gold);font-size:.9rem;margin-block-end:1rem;letter-spacing:.1em}
+    .testimonial-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;line-height:1.7;color:var(--charcoal);margin-block-end:1.5rem}
+    .testimonial-author{display:flex;align-items:center;gap:.75rem}
+    .author-avatar{inline-size:42px;block-size:42px;border-radius:50%;background:var(--blush);display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--rose)}
+    .author-name{font-weight:600;font-size:.88rem}
+    .author-loc{font-size:.76rem;color:var(--muted)}
 
-    .burger {
-      display: none;
-      background: none; border: none;
-      font-size: 1.5rem; cursor: pointer;
-      color: var(--charcoal); padding: 0.25rem;
-    }
+    /* ── NEWSLETTER ── */
+    .newsletter-section{background:var(--forest);color:#fff;text-align:center}
+    .newsletter-section .section-title{color:#fff}
+    .newsletter-section .section-sub{color:rgba(255,255,255,.7);margin:0 auto 2.5rem}
+    .newsletter-form{display:flex;gap:.75rem;max-inline-size:480px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+    .newsletter-form input{flex:1;min-inline-size:230px;padding:.85rem 1.25rem;border-radius:50px;border:none;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;background:rgba(255,255,255,.12);color:#fff;transition:background .3s}
+    .newsletter-form input::placeholder{color:rgba(255,255,255,.5)}
+    .newsletter-form input:focus{background:rgba(255,255,255,.2)}
+    .newsletter-form button{background:var(--gold);color:#fff;border:none;border-radius:50px;padding:.85rem 1.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .3s}
+    .newsletter-form button:hover{background:var(--gold-light);transform:translateY(-1px)}
 
-    /* Mobile Nav */
-    .mobile-nav {
-      display: none;
-      position: fixed; inset-block-start: 0; inset-inline-start: 0; inset-inline-end: 0; inset-block-end: 0;
-      background: var(--cream); z-index: 90;
-      flex-direction: column; align-items: center; justify-content: center;
-      gap: 2rem;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem; font-weight: 300;
-      text-decoration: none; color: var(--charcoal);
-      transition: color 0.3s;
-    }
-    .mobile-nav a:hover { color: var(--forest); }
-    .mobile-close {
-      position: absolute; inset-block-start: 1.5rem; inset-inline-end: 2rem;
-      background: none; border: none;
-      font-size: 2rem; cursor: pointer; color: var(--muted);
-    }
+    /* ── CONTACT ── */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+    .contact-info h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-block-end:1.5rem}
+    .contact-detail{display:flex;gap:1rem;margin-block-end:1.25rem;align-items:flex-start}
+    .contact-icon{inline-size:44px;block-size:44px;border-radius:10px;background:var(--ivory);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;color:var(--forest);transition:all .3s}
+    .contact-detail:hover .contact-icon{background:var(--forest);color:#fff;transform:scale(1.05)}
+    .contact-detail-text strong{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;margin-block-end:.2rem;color:var(--muted)}
+    .contact-detail-text a{color:var(--charcoal);text-decoration:none;font-weight:400;transition:color .3s}
+    .contact-detail-text a:hover{color:var(--forest)}
+    .contact-form{display:flex;flex-direction:column;gap:1rem}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .form-group{display:flex;flex-direction:column;gap:.4rem}
+    .form-group label{font-size:.76rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .form-group input,.form-group textarea,.form-group select{padding:.8rem 1rem;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#fff;color:var(--charcoal);transition:all .3s;outline:none}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(45,90,69,.08)}
+    .form-group textarea{resize:vertical;min-block-size:100px}
+    .form-submit{background:var(--forest);color:#fff;border:none;border-radius:50px;padding:.9rem 2rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;transition:all .35s var(--ease);align-self:flex-start;display:flex;align-items:center;gap:.5rem}
+    .form-submit:hover{background:var(--forest-light);transform:translateY(-2px)}
 
-    /* ══════════ HERO ══════════ */
-    .hero {
-      min-block-size: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-left {
-      background: var(--ivory);
-      display: flex; flex-direction: column;
-      justify-content: center; padding: 8rem 4rem 4rem;
-      position: relative; z-index: 2;
-    }
-    .hero-eyebrow {
-      font-size: 0.75rem; font-weight: 500;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--rose); margin-block-end: 1.5rem;
-      display: flex; align-items: center; gap: 0.75rem;
-    }
-    .hero-eyebrow::before {
-      content: ''; inline-size: 40px; block-size: 1px; background: var(--rose);
-    }
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 5vw, 5rem);
-      font-weight: 300; line-height: 1.1;
-      color: var(--charcoal); margin-block-end: 1.5rem;
-    }
-    .hero h1 em { font-style: italic; color: var(--forest); }
-    .hero-desc {
-      font-size: 1rem; color: var(--muted); max-inline-size: 420px;
-      margin-block-end: 2.5rem; font-weight: 300;
-    }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--forest); color: var(--white);
-      padding: 0.85rem 2rem; border-radius: 50px;
-      text-decoration: none; font-weight: 500; font-size: 0.9rem;
-      transition: var(--transition); border: 2px solid var(--forest);
-      display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-primary:hover { background: transparent; color: var(--forest); transform: translateY(-2px); }
-    .btn-outline {
-      background: transparent; color: var(--charcoal);
-      padding: 0.85rem 2rem; border-radius: 50px;
-      text-decoration: none; font-weight: 500; font-size: 0.9rem;
-      transition: var(--transition); border: 2px solid rgba(0,0,0,0.15);
-    }
-    .btn-outline:hover { border-color: var(--forest); color: var(--forest); }
+    /* ── CART PANEL ── */
+    .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:150;opacity:0;pointer-events:none;transition:opacity .4s;backdrop-filter:blur(2px)}
+    .cart-overlay.open{opacity:1;pointer-events:all}
+    .cart-panel{position:fixed;inset-block-start:0;inset-inline-end:-100%;inset-block-end:0;inline-size:min(420px,100vw);background:var(--cream);z-index:200;display:flex;flex-direction:column;transition:right .5s var(--spring);box-shadow:-20px 0 60px rgba(0,0,0,.15)}
+    .cart-panel.open{inset-inline-end:0}
+    .cart-head{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.75rem;border-block-end:1px solid rgba(0,0,0,.07)}
+    .cart-head h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400}
+    .cart-close{background:var(--ivory);border:none;border-radius:50%;inline-size:36px;block-size:36px;cursor:pointer;font-size:.95rem;transition:all .3s;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .cart-close:hover{background:var(--blush);color:var(--rose)}
+    .cart-body{flex:1;overflow-y:auto;padding:1.25rem 1.75rem}
+    .cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;block-size:100%;gap:1rem;color:var(--muted);text-align:center}
+    .cart-empty-icon{font-size:2.5rem;color:var(--muted)}
+    .cart-item{display:flex;gap:1rem;padding:1rem 0;border-block-end:1px solid rgba(0,0,0,.06);align-items:center;animation:fadeIn .3s ease}
+    .cart-item-img{inline-size:72px;block-size:72px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--ivory)}
+    .cart-item-info{flex:1;min-inline-size:0}
+    .cart-item-name{font-size:.9rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cart-item-price{font-size:.85rem;color:var(--forest);font-weight:600;margin-block-start:.25rem}
+    .cart-item-controls{display:flex;align-items:center;gap:.5rem;margin-block-start:.5rem}
+    .qty-btn{inline-size:26px;block-size:26px;border-radius:50%;border:1.5px solid rgba(0,0,0,.15);background:#fff;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--charcoal)}
+    .qty-btn:hover{border-color:var(--forest);color:var(--forest);transform:scale(1.1)}
+    .qty-val{font-size:.88rem;font-weight:600;min-inline-size:20px;text-align:center}
+    .remove-item{background:none;border:none;cursor:pointer;color:var(--muted);font-size:.9rem;padding:.25rem;transition:all .2s;margin-inline-start:auto;border-radius:50%;inline-size:28px;block-size:28px;display:flex;align-items:center;justify-content:center}
+    .remove-item:hover{color:#e55;background:rgba(229,85,85,.1)}
+    .cart-foot{padding:1.25rem 1.75rem;border-block-start:1px solid rgba(0,0,0,.07)}
+    .cart-subtotal{display:flex;justify-content:space-between;margin-block-end:.4rem;font-size:.85rem;color:var(--muted)}
+    .cart-total-row{display:flex;justify-content:space-between;margin-block-end:1.25rem;font-weight:700;font-size:1.1rem}
+    .checkout-btn{inline-size:100%;background:var(--forest);color:#fff;border:none;border-radius:50px;padding:1rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;transition:all .3s var(--ease);margin-block-end:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+    .checkout-btn:hover{background:var(--forest-light);transform:translateY(-1px)}
+    .clear-cart-btn{inline-size:100%;background:transparent;color:var(--muted);border:1.5px solid rgba(0,0,0,.1);border-radius:50px;padding:.75rem;font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+    .clear-cart-btn:hover{border-color:#e55;color:#e55}
 
-    .hero-stats {
-      display: flex; gap: 2rem; margin-block-start: 3rem;
-      padding-block-start: 2rem; border-block-start: 1px solid rgba(0,0,0,0.08);
-    }
-    .stat-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600; color: var(--forest);
-      display: block;
-    }
-    .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    /* ── AUTH MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:#fff;border-radius:20px;padding:2.5rem;inline-size:100%;max-inline-size:440px;box-shadow:0 40px 80px rgba(0,0,0,.2);transform:scale(.92) translateY(20px);transition:all .4s var(--spring);position:relative;max-block-size:90vh;overflow-y:auto}
+    .modal-overlay.open .modal{transform:scale(1) translateY(0)}
+    .modal-close{position:absolute;inset-block-start:1.25rem;inset-inline-end:1.25rem;background:var(--ivory);border:none;border-radius:50%;inline-size:34px;block-size:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--muted);transition:all .3s}
+    .modal-close:hover{background:var(--blush);color:var(--rose)}
+    .modal-logo{text-align:center;margin-block-end:1.75rem}
+    .modal-logo i{font-size:2.5rem;color:var(--forest)}
+    .modal-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:400;text-align:center;margin-block-end:.4rem}
+    .modal-sub{text-align:center;color:var(--muted);font-size:.87rem;margin-block-end:2rem}
+    .modal-tabs{display:flex;background:var(--ivory);border-radius:50px;padding:.25rem;margin-block-end:1.75rem}
+    .modal-tab{flex:1;padding:.55rem;border:none;background:transparent;border-radius:50px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;font-size:.85rem;color:var(--muted);transition:all .3s}
+    .modal-tab.active{background:#fff;color:var(--charcoal);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .modal-form{display:flex;flex-direction:column;gap:.9rem}
+    .modal-form .form-group input{padding:.75rem 1rem}
+    .modal-form .form-group label{font-size:.74rem}
+    .modal-btn{inline-size:100%;background:var(--forest);color:#fff;border:none;border-radius:50px;padding:.9rem;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer;transition:all .35s var(--ease);margin-block-start:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+    .modal-btn:hover{background:var(--forest-light);transform:translateY(-1px)}
+    .modal-switch{text-align:center;margin-block-start:1rem;font-size:.84rem;color:var(--muted)}
+    .modal-switch a{color:var(--forest);text-decoration:none;font-weight:500;cursor:pointer}
+    .modal-switch a:hover{text-decoration:underline}
+    .input-icon-wrap{position:relative}
+    .input-icon-wrap i{position:absolute;inset-inline-start:.9rem;inset-block-start:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+    .input-icon-wrap input{padding-inline-start:2.4rem}
 
-    .hero-right {
-      position: relative; overflow: hidden;
-    }
-    .hero-right img {
-      inline-size: 100%; block-size: 100%; object-fit: cover;
-      transition: transform 8s ease;
-    }
-    .hero-right:hover img { transform: scale(1.03); }
-    .hero-tag {
-      position: absolute; inset-block-end: 2.5rem; inset-inline-start: -1rem;
-      background: var(--white); border-radius: 12px;
-      padding: 1rem 1.5rem;
-      box-shadow: var(--card-shadow);
-      display: flex; align-items: center; gap: 1rem;
-      animation: floatCard 3s ease-in-out infinite;
-    }
-    @keyframes floatCard {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    .hero-tag-icon { font-size: 2rem; }
-    .hero-tag-text strong { display: block; font-size: 0.9rem; }
-    .hero-tag-text span { font-size: 0.75rem; color: var(--muted); }
+    /* ── TOAST ── */
+    .toast-container{position:fixed;inset-block-end:2rem;inset-inline-start:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+    .toast{background:var(--charcoal);color:#fff;padding:.7rem 1.4rem;border-radius:50px;font-size:.84rem;font-weight:500;display:flex;align-items:center;gap:.5rem;animation:toastIn .4s var(--spring),toastOut .4s ease 2.3s forwards;box-shadow:0 8px 24px rgba(0,0,0,.2);white-space:nowrap}
+    .toast.success{background:var(--forest)}
+    .toast.error{background:#c0392b}
+    .toast.info{background:var(--gold)}
+    @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes toastOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-16px)}}
 
-    /* ══════════ MARQUEE ══════════ */
-    .marquee-section {
-      background: var(--forest); color: var(--white);
-      padding: 1rem 0; overflow: hidden;
-    }
-    .marquee-track {
-      display: flex; gap: 3rem; inline-size: max-content;
-      animation: marquee 18s linear infinite;
-    }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .marquee-item {
-      white-space: nowrap; font-size: 0.8rem;
-      text-transform: uppercase; letter-spacing: 0.15em;
-      opacity: 0.85; display: flex; align-items: center; gap: 1rem;
-    }
-    .marquee-dot { inline-size: 4px; block-size: 4px; border-radius: 50%; background: var(--gold-light); flex-shrink: 0; }
+    /* ── FOOTER ── */
+    .site-footer{background:var(--charcoal);color:rgba(255,255,255,.8)}
+    .footer-main{max-inline-size:1280px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:4rem 2rem}
+    .footer-brand .logo{color:#fff;font-size:1.4rem;margin-block-end:1rem;display:block}
+    .footer-brand p{font-size:.85rem;line-height:1.7;font-weight:300;max-inline-size:280px}
+    .footer-socials{display:flex;gap:.75rem;margin-block-start:1.5rem}
+    .social-link{inline-size:36px;block-size:36px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:.9rem;transition:all .3s}
+    .social-link:hover{background:var(--forest);transform:translateY(-3px) scale(1.1)}
+    .footer-col h5{font-size:.73rem;text-transform:uppercase;letter-spacing:.15em;margin-block-end:1rem;color:rgba(255,255,255,.45)}
+    .footer-col a{display:block;color:rgba(255,255,255,.7);text-decoration:none;font-size:.875rem;margin-block-end:.6rem;transition:color .3s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{border-block-start:1px solid rgba(255,255,255,.08);padding:1.25rem 2rem;text-align:center;font-size:.78rem;color:rgba(255,255,255,.35);max-inline-size:1280px;margin:0 auto}
 
-    /* ══════════ SECTIONS ══════════ */
-    .section { padding: 6rem 2rem; }
-    .container { max-inline-size: 1280px; margin: auto; }
+    /* ── UTILS ── */
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
 
-    .section-label {
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--rose); margin-block-end: 0.75rem;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 300; line-height: 1.2;
-      margin-block-end: 0.5rem;
-    }
-    .section-title em { font-style: italic; color: var(--forest); }
-    .section-sub { color: var(--muted); font-size: 0.95rem; font-weight: 300; max-inline-size: 500px; }
-
-    .section-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-block-end: 3rem; flex-wrap: wrap; gap: 1.5rem;
-    }
-
-    /* ══════════ FILTERS ══════════ */
-    .filters {
-      display: flex; gap: 0.5rem; flex-wrap: wrap;
-    }
-    .filter-btn {
-      padding: 0.4rem 1rem;
-      border-radius: 50px; border: 1.5px solid rgba(0,0,0,0.12);
-      background: transparent; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
-      color: var(--muted); transition: all 0.3s;
-    }
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--forest); color: white; border-color: var(--forest);
-    }
-
-    /* ══════════ PRODUCT GRID ══════════ */
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .product-card {
-      background: white; border-radius: 16px; overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-      cursor: pointer; position: relative;
-    }
-    .product-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.14);
-    }
-    .product-img-wrap {
-      position: relative; overflow: hidden;
-      block-size: 260px; background: var(--ivory);
-    }
-    .product-img-wrap img {
-      inline-size: 100%; block-size: 100%; object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-    .product-card:hover .product-img-wrap img { transform: scale(1.08); }
-    .product-badge {
-      position: absolute; inset-block-start: 1rem; inset-inline-start: 1rem;
-      background: var(--forest); color: white;
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 50px;
-    }
-    .product-badge.new { background: var(--rose); }
-    .product-badge.popular { background: var(--gold); }
-    .quick-add {
-      position: absolute; inset-block-end: 1rem; inset-inline-start: 50%; transform: translateX(-50%) translateY(60px);
-      white-space: nowrap;
-      background: var(--charcoal); color: white;
-      padding: 0.6rem 1.25rem; border-radius: 50px;
-      font-size: 0.82rem; font-weight: 500; border: none; cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-      opacity: 0;
-    }
-    .product-card:hover .quick-add {
-      opacity: 1; transform: translateX(-50%) translateY(0);
-    }
-    .wishlist-btn {
-      position: absolute; inset-block-start: 1rem; inset-inline-end: 1rem;
-      background: white; border: none; border-radius: 50%;
-      inline-size: 36px; block-size: 36px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-      transition: all 0.3s; opacity: 0;
-    }
-    .product-card:hover .wishlist-btn { opacity: 1; }
-    .wishlist-btn:hover { transform: scale(1.1); }
-    .wishlist-btn.liked { opacity: 1; color: var(--rose); }
-
-    .product-body { padding: 1.25rem 1.25rem 1.5rem; }
-    .product-category {
-      font-size: 0.7rem; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--muted); margin-block-end: 0.35rem;
-    }
-    .product-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem; font-weight: 400;
-      margin-block-end: 0.75rem; line-height: 1.3;
-    }
-    .product-footer { display: flex; justify-content: space-between; align-items: center; }
-    .product-price {
-      font-size: 1.1rem; font-weight: 600; color: var(--forest);
-    }
-    .product-rating { font-size: 0.78rem; color: var(--gold); }
-    .add-btn {
-      inline-size: 38px; block-size: 38px; border-radius: 50%;
-      background: var(--forest); color: white;
-      border: none; font-size: 1.3rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s;
-    }
-    .add-btn:hover { background: var(--forest-light); transform: scale(1.1); }
-    .add-btn:active { transform: scale(0.95); }
-
-    /* ══════════ ABOUT ══════════ */
-    .about-section { background: var(--ivory); }
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 5rem; align-items: center;
-    }
-    .about-visual {
-      position: relative;
-    }
-    .about-visual img {
-      inline-size: 100%; border-radius: 12px; display: block;
-      box-shadow: var(--card-shadow);
-    }
-    .about-accent {
-      position: absolute; inset-block-end: -2rem; inset-inline-end: -2rem;
-      inline-size: 200px; block-size: 200px;
-      background: var(--blush); border-radius: 12px; z-index: -1;
-    }
-    .about-badge {
-      position: absolute; inset-block-start: 2rem; inset-inline-start: -2rem;
-      background: var(--forest); color: white;
-      border-radius: 12px; padding: 1.25rem 1.5rem;
-      box-shadow: var(--card-shadow);
-    }
-    .about-badge-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem; font-weight: 600; display: block; line-height: 1;
-    }
-    .about-badge-txt { font-size: 0.78rem; opacity: 0.85; }
-
-    .about-text { padding: 2rem 0; }
-    .about-text p { color: var(--muted); margin-block-end: 1.25rem; font-weight: 300; line-height: 1.8; }
-    .feature-list { list-style: none; margin: 2rem 0; display: flex; flex-direction: column; gap: 0.9rem; }
-    .feature-list li {
-      display: flex; align-items: center; gap: 0.75rem;
-      font-size: 0.9rem; color: var(--charcoal);
-    }
-    .feature-list li::before {
-      content: none;
-    }
-    .feature-list li i {
-      color: var(--gold); font-size: 0.75rem; flex-shrink: 0; inline-size: 16px;
-    }
-
-    /* ══════════ TESTIMONIALS ══════════ */
-    .testimonials-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-      gap: 1.5rem;
-    }
-    .testimonial-card {
-      background: white; border-radius: 16px; padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      transition: var(--transition);
-    }
-    .testimonial-card:hover { transform: translateY(-4px); }
-    .stars { color: var(--gold); font-size: 0.9rem; margin-block-end: 1rem; letter-spacing: 0.1em; }
-    .testimonial-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem; font-style: italic; font-weight: 300;
-      line-height: 1.7; color: var(--charcoal); margin-block-end: 1.5rem;
-    }
-    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
-    .author-avatar {
-      inline-size: 42px; block-size: 42px; border-radius: 50%;
-      background: var(--blush); display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-    }
-    .author-name { font-weight: 600; font-size: 0.9rem; }
-    .author-loc { font-size: 0.78rem; color: var(--muted); }
-
-    /* ══════════ NEWSLETTER ══════════ */
-    .newsletter-section {
-      background: var(--forest); color: white; text-align: center;
-    }
-    .newsletter-section .section-title { color: white; }
-    .newsletter-section .section-sub { color: rgba(255,255,255,0.7); margin: 0 auto 2.5rem; }
-    .newsletter-form {
-      display: flex; gap: 0.75rem; max-inline-size: 480px;
-      margin: 0 auto; flex-wrap: wrap; justify-content: center;
-    }
-    .newsletter-form input {
-      flex: 1; min-inline-size: 240px;
-      padding: 0.85rem 1.25rem; border-radius: 50px;
-      border: none; font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem; outline: none;
-      background: rgba(255,255,255,0.12); color: white;
-    }
-    .newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
-    .newsletter-form input:focus { background: rgba(255,255,255,0.18); }
-    .newsletter-form button {
-      background: var(--gold); color: white;
-      border: none; border-radius: 50px;
-      padding: 0.85rem 1.75rem; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-weight: 600;
-      transition: var(--transition);
-    }
-    .newsletter-form button:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-    /* ══════════ CONTACT ══════════ */
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
-    }
-    .contact-info h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 300; margin-block-end: 1.5rem;
-    }
-    .contact-detail {
-      display: flex; gap: 1rem; margin-block-end: 1.25rem; align-items: flex-start;
-    }
-    .contact-icon {
-      inline-size: 44px; block-size: 44px; border-radius: 10px;
-      background: var(--ivory); display: flex; align-items: center;
-      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
-    }
-    .contact-detail-text strong { display: block; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-block-end: 0.2rem; color: var(--muted); }
-    .contact-detail-text a { color: var(--charcoal); text-decoration: none; font-weight: 400; }
-    .contact-detail-text a:hover { color: var(--forest); }
-
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-group label { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .form-group input, .form-group textarea, .form-group select {
-      padding: 0.8rem 1rem;
-      border: 1.5px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-      background: white; color: var(--charcoal);
-      transition: border-color 0.3s; outline: none;
-    }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: var(--forest);
-    }
-    .form-group textarea { resize: vertical; min-block-size: 100px; }
-    .form-submit {
-      background: var(--forest); color: white;
-      border: none; border-radius: 50px;
-      padding: 0.9rem 2rem; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
-      transition: var(--transition); align-self: flex-start;
-    }
-    .form-submit:hover { background: var(--forest-light); transform: translateY(-2px); }
-
-    /* ══════════ CART PANEL ══════════ */
-    .cart-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-      z-index: 150; opacity: 0; pointer-events: none;
-      transition: opacity 0.4s;
-    }
-    .cart-overlay.open { opacity: 1; pointer-events: all; }
-
-    .cart-panel {
-      position: fixed; inset-block-start: 0; inset-inline-end: -100%; inset-block-end: 0;
-      inline-size: min(420px, 100vw);
-      background: var(--cream); z-index: 200;
-      display: flex; flex-direction: column;
-      transition: right 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
-      box-shadow: -20px 0 60px rgba(0,0,0,0.15);
-    }
-    .cart-panel.open { inset-inline-end: 0; }
-
-    .cart-head {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.5rem 1.75rem; border-block-end: 1px solid rgba(0,0,0,0.07);
-    }
-    .cart-head h3 {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400;
-    }
-    .cart-close {
-      background: var(--ivory); border: none; border-radius: 50%;
-      inline-size: 36px; block-size: 36px; cursor: pointer;
-      font-size: 1rem; transition: all 0.3s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .cart-close:hover { background: var(--blush); }
-
-    .cart-body { flex: 1; overflow-y: auto; padding: 1.25rem 1.75rem; }
-    .cart-empty {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      block-size: 100%; gap: 1rem; color: var(--muted); text-align: center;
-    }
-    .cart-empty-icon { font-size: 2.5rem; color: var(--muted); }
-
-    .cart-item {
-      display: flex; gap: 1rem; padding: 1rem 0;
-      border-block-end: 1px solid rgba(0,0,0,0.06); align-items: center;
-    }
-    .cart-item-img {
-      inline-size: 72px; block-size: 72px; border-radius: 10px;
-      object-fit: cover; flex-shrink: 0;
-      background: var(--ivory);
-    }
-    .cart-item-info { flex: 1; min-inline-size: 0; }
-    .cart-item-name {
-      font-size: 0.9rem; font-weight: 500;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .cart-item-price { font-size: 0.85rem; color: var(--forest); font-weight: 600; margin-block-start: 0.25rem; }
-    .cart-item-controls {
-      display: flex; align-items: center; gap: 0.5rem; margin-block-start: 0.5rem;
-    }
-    .qty-btn {
-      inline-size: 26px; block-size: 26px; border-radius: 50%;
-      border: 1.5px solid rgba(0,0,0,0.15); background: white;
-      cursor: pointer; font-size: 0.9rem; font-weight: 600;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-    .qty-btn:hover { border-color: var(--forest); color: var(--forest); }
-    .qty-val { font-size: 0.88rem; font-weight: 600; min-inline-size: 20px; text-align: center; }
-    .remove-item {
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 1rem; padding: 0.25rem;
-      transition: color 0.2s; margin-inline-start: auto;
-    }
-    .remove-item:hover { color: #e55; }
-
-    .cart-foot {
-      padding: 1.25rem 1.75rem;
-      border-block-start: 1px solid rgba(0,0,0,0.07);
-    }
-    .cart-subtotal {
-      display: flex; justify-content: space-between;
-      margin-block-end: 0.5rem; font-size: 0.85rem; color: var(--muted);
-    }
-    .cart-total {
-      display: flex; justify-content: space-between;
-      margin-block-end: 1.25rem; font-weight: 700; font-size: 1.1rem;
-    }
-    .checkout-btn {
-      inline-size: 100%; background: var(--forest); color: white;
-      border: none; border-radius: 50px; padding: 1rem;
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
-      cursor: pointer; transition: var(--transition); margin-block-end: 0.75rem;
-    }
-    .checkout-btn:hover { background: var(--forest-light); }
-    .clear-cart-btn {
-      inline-size: 100%; background: transparent; color: var(--muted);
-      border: 1.5px solid rgba(0,0,0,0.1); border-radius: 50px; padding: 0.75rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer;
-      transition: all 0.3s;
-    }
-    .clear-cart-btn:hover { border-color: #e55; color: #e55; }
-
-    /* ══════════ TOAST ══════════ */
-    .toast-container {
-      position: fixed; inset-block-end: 2rem; inset-inline-start: 50%; transform: translateX(-50%);
-      z-index: 300; display: flex; flex-direction: column; gap: 0.5rem;
-      pointer-events: none;
-    }
-    .toast {
-      background: var(--charcoal); color: white;
-      padding: 0.75rem 1.5rem; border-radius: 50px;
-      font-size: 0.85rem; font-weight: 500;
-      display: flex; align-items: center; gap: 0.5rem;
-      animation: toastIn 0.4s ease, toastOut 0.4s ease 2.2s forwards;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    }
-    .toast.success { background: var(--forest); }
-    .toast.error { background: #c0392b; }
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes toastOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(-20px); }
-    }
-
-    /* ══════════ FOOTER ══════════ */
-    .site-footer {
-      background: var(--charcoal); color: rgba(255,255,255,0.8);
-    }
-    .footer-main {
-      max-inline-size: 1280px; margin: auto;
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem; padding: 4rem 2rem;
-    }
-    .footer-brand .logo { color: white; font-size: 1.4rem; margin-block-end: 1rem; display: block; }
-    .footer-brand p { font-size: 0.85rem; line-height: 1.7; font-weight: 300; max-inline-size: 280px; }
-    .footer-socials { display: flex; gap: 0.75rem; margin-block-start: 1.5rem; }
-    .social-link {
-      inline-size: 36px; block-size: 36px; border-radius: 50%;
-      background: rgba(255,255,255,0.1); color: white;
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none; font-size: 0.9rem; transition: all 0.3s;
-    }
-    .social-link:hover { background: var(--forest); transform: translateY(-2px); }
-    .footer-col h5 {
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em;
-      margin-block-end: 1rem; color: rgba(255,255,255,0.5);
-    }
-    .footer-col a {
-      display: block; color: rgba(255,255,255,0.75);
-      text-decoration: none; font-size: 0.875rem;
-      margin-block-end: 0.6rem; transition: color 0.3s;
-    }
-    .footer-col a:hover { color: white; }
-    .footer-bottom {
-      border-block-start: 1px solid rgba(255,255,255,0.08);
-      padding: 1.25rem 2rem; text-align: center;
-      font-size: 0.8rem; color: rgba(255,255,255,0.4);
-      max-inline-size: 1280px; margin: 0 auto;
-    }
-
-    /* ══════════ ANIMATIONS ══════════ */
-    .reveal {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ══════════ RESPONSIVE ══════════ */
-    @media (max-inline-size: 1024px) {
-      .hero { grid-template-columns: 1fr; min-block-size: auto; }
-      .hero-left { padding: 7rem 2rem 3rem; }
-      .hero-right { block-size: 50vw; min-block-size: 300px; }
-      .hero-tag { display: none; }
-      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .about-badge { display: none; }
-      .footer-main { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-inline-size: 768px) {
-      .nav-links { display: none; }
-      .burger { display: block; }
-      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .form-row { grid-template-columns: 1fr; }
-      .footer-main { grid-template-columns: 1fr; gap: 2rem; padding: 2.5rem 1.5rem; }
-      .hero-stats { gap: 1.25rem; }
-      .section { padding: 4rem 1.25rem; }
-      .header-inner { padding: 1rem 1.25rem; }
-      .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
-      .product-card { padding: 0.75rem; }
-      .product-body { padding: 0.75rem; }
-      .product-name { font-size: 1rem; }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .newsletter-form { flex-direction: column; }
-      .newsletter-form input { min-inline-size: 100%; }
-    }
-    @media (max-inline-size: 640px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-left { padding: 5rem 1.5rem 2rem; }
-      .hero-right { block-size: 40vh; }
-      .hero h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
-      .section-title { font-size: clamp(1.5rem, 3vw, 2rem); }
-      .products-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-      .cart-panel { inline-size: 100vw; }
-      .hero-stats { flex-direction: column; gap: 1rem; }
-      .section-header { flex-direction: column; gap: 1rem; }
-      .filters { justify-content: center; }
-      .about-grid { gap: 1.5rem; }
+    /* ── RESPONSIVE ── */
+    @media(max-inline-size:1024px){
+      .hero{grid-template-columns:1fr;min-block-size:auto}
+      .hero-left{padding:7rem 2rem 3rem}
+      .hero-right{block-size:50vw;min-block-size:280px}
+      .hero-tag{display:none}
+      .about-grid{grid-template-columns:1fr;gap:2.5rem}
+      .about-badge{display:none}
+      .footer-main{grid-template-columns:1fr 1fr}
+    }
+    @media(max-inline-size:768px){
+      .nav-links{display:none}
+      .burger{display:flex;align-items:center;justify-content:center}
+      .contact-grid{grid-template-columns:1fr;gap:2.5rem}
+      .form-row{grid-template-columns:1fr}
+      .footer-main{grid-template-columns:1fr;gap:2rem;padding:2.5rem 1.5rem}
+      .section{padding:4rem 1.25rem}
+      .header-inner{padding:1rem 1.25rem}
+      .user-btn span{display:none}
     }
   </style>
 </head>
 <body>
 
-<!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- HEADER -->
 <header class="site-header" id="siteHeader">
   <div class="header-inner">
-    <a class="logo" href="#home">
-      <i class="fa-solid fa-seedling logo-icon"></i> Alegria Flower's
-    </a>
+    <a class="logo" href="#home"><i class="fa-solid fa-seedling"></i> Alegria Flower's</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Accueil</a></li>
       <li><a href="#shop">Boutique</a></li>
@@ -727,11 +302,9 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="header-actions">
-      <button class="cart-btn" id="openCart" aria-label="Ouvrir le panier">
-        <i class="fa-solid fa-basket-shopping"></i> Panier
-        <span class="cart-badge" id="cartBadge">0</span>
-      </button>
-      <button class="burger" id="burgerBtn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <button class="user-btn" id="userBtn"><i class="fa-regular fa-user"></i> <span id="userLabel">Connexion</span></button>
+      <button class="cart-btn" id="openCart"><i class="fa-solid fa-basket-shopping"></i> Panier <span class="cart-badge" id="cartBadge">0</span></button>
+      <button class="burger" id="burgerBtn"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
 </header>
@@ -757,41 +330,27 @@
         <a href="#about" class="btn-outline">Notre histoire</a>
       </div>
       <div class="hero-stats">
-        <div>
-          <span class="stat-number">500+</span>
-          <span class="stat-label">Clients heureux</span>
-        </div>
-        <div>
-          <span class="stat-number">50+</span>
-          <span class="stat-label">Créations</span>
-        </div>
-        <div>
-          <span class="stat-number">5★</span>
-          <span class="stat-label">Satisfaction</span>
-        </div>
+        <div><span class="stat-number" data-target="500">0</span><span class="stat-label">Clients heureux</span></div>
+        <div><span class="stat-number" data-target="50">0</span><span class="stat-label">Créations</span></div>
+        <div><span class="stat-number" data-target="5" data-suffix="★">0</span><span class="stat-label">Satisfaction</span></div>
       </div>
     </div>
     <div class="hero-right">
-      <img src="Rose2.jpg" alt="Bouquet de roses Alegria" onerror="this.style.background='linear-gradient(135deg,#e8b4c4,#5ab782)';this.style.display='block'"/>
+      <img src="Rose2.jpg" alt="Bouquet Alegria" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#e8b4c4,#2d5a45)'"/>
       <div class="hero-tag">
-        <span class="hero-tag-icon"><i class="fa-solid fa-truck-fast" style="color:var(--forest);font-size:1.5rem"></i></span>
-        <div class="hero-tag-text">
-          <strong>Livraison rapide</strong>
-          <span>Lubumbashi & environs</span>
-        </div>
+        <span class="hero-tag-icon"><i class="fa-solid fa-truck-fast"></i></span>
+        <div class="hero-tag-text"><strong>Livraison rapide</strong><span>Lubumbashi & environs</span></div>
       </div>
     </div>
   </section>
 
   <!-- MARQUEE -->
-  <div class="marquee-section">
-    <div class="marquee-track" id="marqueeTrack"></div>
-  </div>
+  <div class="marquee-section"><div class="marquee-track" id="marqueeTrack"></div></div>
 
   <!-- SHOP -->
   <section id="shop" class="section">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <div>
           <p class="section-label">Notre sélection</p>
           <h2 class="section-title">Nos <em>bouquets</em></h2>
@@ -810,16 +369,16 @@
 
   <!-- ABOUT -->
   <section id="about" class="section about-section">
-    <div class="container about-grid reveal">
-      <div class="about-visual">
-        <img src="Rose1.jpg" alt="Alegria Flowers" onerror="this.style.minHeight='400px';this.style.background='linear-gradient(135deg,#e8b4c4,#5ab782)'" />
+    <div class="container about-grid">
+      <div class="about-visual reveal">
+        <img src="Rose1.jpg" alt="Alegria Flowers" onerror="this.style.minHeight='400px';this.style.background='linear-gradient(135deg,#e8b4c4,#2d5a45)'"/>
         <div class="about-accent"></div>
         <div class="about-badge">
           <span class="about-badge-num">5★</span>
           <span class="about-badge-txt">Satisfaction client</span>
         </div>
       </div>
-      <div class="about-text">
+      <div class="about-text reveal reveal-d2">
         <p class="section-label">Notre histoire</p>
         <h2 class="section-title">La passion des <em>fleurs</em></h2>
         <p>Alegria Shop Flower's est née d'une passion sincère pour la beauté des fleurs et la joie qu'elles apportent. Chaque bouquet est une lettre sans mots, un sourire offert.</p>
@@ -830,7 +389,7 @@
           <li><i class="fa-solid fa-check"></i> Livraison rapide à Lubumbashi et ses environs</li>
           <li><i class="fa-solid fa-check"></i> Conseils personnalisés pour chaque occasion</li>
         </ul>
-        <a href="#contact" class="btn-primary" style="margin-block-start:0.5rem; display:inline-flex; align-items:center; gap:0.5rem;">Commander sur mesure <i class="fa-solid fa-star" style="font-size:0.7rem"></i></a>
+        <a href="#contact" class="btn-primary" style="margin-block-start:.5rem">Commander sur mesure <i class="fa-solid fa-star" style="font-size:.75rem"></i></a>
       </div>
     </div>
   </section>
@@ -838,58 +397,28 @@
   <!-- TESTIMONIALS -->
   <section class="section">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <div>
           <p class="section-label">Témoignages</p>
           <h2 class="section-title">Ce qu'ils <em>disent</em></h2>
         </div>
       </div>
       <div class="testimonials-grid">
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p class="testimonial-text">« Les bouquets sont absolument magnifiques et toujours frais. Ma femme a adoré ! Je recommande vivement Alegria. »</p>
-          <div class="testimonial-author">
-            <div class="author-avatar">👨</div>
-            <div>
-              <div class="author-name">Patrick M.</div>
-              <div class="author-loc">Lubumbashi, Gombe</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p class="testimonial-text">« Service rapide et professionnel. J'ai commandé un bouquet personnalisé pour un mariage et c'était parfait ! »</p>
-          <div class="testimonial-author">
-            <div class="author-avatar">👩</div>
-            <div>
-              <div class="author-name">Marie K.</div>
-              <div class="author-loc">Lubumbashi, Limete</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p class="testimonial-text">« Des fleurs qui sentent bon, des couleurs éclatantes et une livraison à l'heure. Merci Alegria, vous êtes les meilleurs ! »</p>
-          <div class="testimonial-author">
-            <div class="author-avatar">👧</div>
-            <div>
-              <div class="author-name">Sophie A.</div>
-              <div class="author-loc">Lubumbashi, Ngaliema</div>
-            </div>
-          </div>
-        </div>
+        <div class="testimonial-card reveal"><div class="stars">★★★★★</div><p class="testimonial-text">« Les bouquets sont absolument magnifiques et toujours frais. Ma femme a adoré ! Je recommande vivement Alegria. »</p><div class="testimonial-author"><div class="author-avatar"><i class="fa-solid fa-user"></i></div><div><div class="author-name">Patrick M.</div><div class="author-loc">Lubumbashi, Lubumbashi</div></div></div></div>
+        <div class="testimonial-card reveal reveal-d1"><div class="stars">★★★★★</div><p class="testimonial-text">« Service rapide et professionnel. J'ai commandé un bouquet personnalisé pour un mariage et c'était parfait ! »</p><div class="testimonial-author"><div class="author-avatar"><i class="fa-solid fa-user"></i></div><div><div class="author-name">Marie K.</div><div class="author-loc">Lubumbashi, Kenya</div></div></div></div>
+        <div class="testimonial-card reveal reveal-d2"><div class="stars">★★★★★</div><p class="testimonial-text">« Des fleurs qui sentent bon, des couleurs éclatantes et une livraison à l'heure. Merci Alegria, vous êtes les meilleurs ! »</p><div class="testimonial-author"><div class="author-avatar"><i class="fa-solid fa-user"></i></div><div><div class="author-name">Sophie A.</div><div class="author-loc">Lubumbashi, Annexe</div></div></div></div>
       </div>
     </div>
   </section>
 
   <!-- NEWSLETTER -->
   <section class="section newsletter-section">
-    <div class="container" style="text-align:center">
+    <div class="container">
       <p class="section-label" style="color:var(--blush)">Restez informé·e</p>
       <h2 class="section-title">Offres & nouveautés</h2>
       <p class="section-sub">Inscrivez-vous pour recevoir nos promotions et nouvelles créations en avant-première.</p>
       <form class="newsletter-form" id="newsletterForm">
-        <input type="email" placeholder="Votre adresse email" required />
+        <input type="email" placeholder="Votre adresse email" required/>
         <button type="submit">S'inscrire <i class="fa-solid fa-arrow-right"></i></button>
       </form>
     </div>
@@ -901,66 +430,21 @@
       <div class="contact-info reveal">
         <p class="section-label">Nous contacter</p>
         <h3>Parlons de votre <em style="font-style:italic;color:var(--forest)">commande</em></h3>
-        <p style="color:var(--muted);margin-block-end:2rem;font-weight:300">Une demande spéciale ? Une question ? Nous répondons rapidement.</p>
-        <div class="contact-detail">
-          <div class="contact-icon"><i class="fa-regular fa-envelope"></i></div>
-          <div class="contact-detail-text">
-            <strong>Email</strong>
-            <a href="mailto:Alegriashop272@gmail.com">Alegriashop272@gmail.com</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-icon"><i class="fa-brands fa-whatsapp"></i></div>
-          <div class="contact-detail-text">
-            <strong>Téléphone / WhatsApp</strong>
-            <a href="tel:+243857961836">+243 857 961 836</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-icon"><i class="fa-regular fa-clock"></i></div>
-          <div class="contact-detail-text">
-            <strong>Horaires</strong>
-            <span>Lun – Sam : 8h – 19h</span>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
-          <div class="contact-detail-text">
-            <strong>Localisation</strong>
-            <span>Lubumbashi, République Démocratique du Congo</span>
-          </div>
-        </div>
+        <p style="color:var(--muted);margin-block-end:2rem;font-weight:300">Une demande spéciale ? Nous répondons rapidement.</p>
+        <div class="contact-detail"><div class="contact-icon"><i class="fa-regular fa-envelope"></i></div><div class="contact-detail-text"><strong>Email</strong><a href="mailto:Alegriashop272@gmail.com">Alegriashop272@gmail.com</a></div></div>
+        <div class="contact-detail"><div class="contact-icon"><i class="fa-brands fa-whatsapp"></i></div><div class="contact-detail-text"><strong>WhatsApp</strong><a href="tel:+243857961836">+243 857 961 836</a></div></div>
+        <div class="contact-detail"><div class="contact-icon"><i class="fa-regular fa-clock"></i></div><div class="contact-detail-text"><strong>Horaires</strong><span>Lun – Sam : 8h – 19h</span></div></div>
+        <div class="contact-detail"><div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div><div class="contact-detail-text"><strong>Localisation</strong><span>Lubumbashi, Haut-Katanga, RDC</span></div></div>
       </div>
-      <div class="reveal">
+      <div class="reveal reveal-d2">
         <form class="contact-form" id="contactForm">
           <div class="form-row">
-            <div class="form-group">
-              <label>Prénom</label>
-              <input type="text" placeholder="Marie" required />
-            </div>
-            <div class="form-group">
-              <label>Nom</label>
-              <input type="text" placeholder="Dupont" required />
-            </div>
+            <div class="form-group"><label>Prénom</label><input type="text" placeholder="Marie" required/></div>
+            <div class="form-group"><label>Nom</label><input type="text" placeholder="Dupont" required/></div>
           </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="marie@exemple.com" required />
-          </div>
-          <div class="form-group">
-            <label>Type de demande</label>
-            <select>
-              <option value="">Choisir...</option>
-              <option>Commande sur mesure</option>
-              <option>Mariage / Événement</option>
-              <option>Livraison</option>
-              <option>Autre</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Message</label>
-            <textarea placeholder="Décrivez votre projet..." required></textarea>
-          </div>
+          <div class="form-group"><label>Email</label><input type="email" placeholder="marie@exemple.com" required/></div>
+          <div class="form-group"><label>Type de demande</label><select><option value="">Choisir...</option><option>Commande sur mesure</option><option>Mariage / Événement</option><option>Livraison</option><option>Autre</option></select></div>
+          <div class="form-group"><label>Message</label><textarea placeholder="Décrivez votre projet..." required></textarea></div>
           <button type="submit" class="form-submit">Envoyer le message <i class="fa-solid fa-paper-plane"></i></button>
         </form>
       </div>
@@ -968,27 +452,71 @@
   </section>
 </main>
 
-<!-- CART OVERLAY + PANEL -->
+<!-- CART -->
 <div class="cart-overlay" id="cartOverlay"></div>
-<aside class="cart-panel" id="cartPanel" aria-label="Panier">
+<aside class="cart-panel" id="cartPanel">
   <div class="cart-head">
-    <h3>Mon panier <i class="fa-solid fa-basket-shopping" style="font-size:1.1rem;color:var(--forest)"></i></h3>
+    <h3>Mon panier <i class="fa-solid fa-basket-shopping" style="font-size:1rem;color:var(--forest)"></i></h3>
     <button class="cart-close" id="closeCart"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="cart-body" id="cartBody"></div>
   <div class="cart-foot" id="cartFoot">
-    <div class="cart-subtotal">
-      <span>Sous-total</span>
-      <span id="cartSubtotal">$0.00</span>
-    </div>
-    <div class="cart-total">
-      <span>Total</span>
-      <span id="cartTotal">$0.00</span>
-    </div>
-    <button class="checkout-btn" id="checkoutBtn">Commander maintenant <i class="fa-solid fa-arrow-right"></i></button>
-    <button class="clear-cart-btn" id="clearCartBtn">Vider le panier</button>
+    <div class="cart-subtotal"><span>Sous-total</span><span id="cartSubtotal">$0,00</span></div>
+    <div class="cart-total-row"><span>Total</span><span id="cartTotal">$0,00</span></div>
+    <button class="checkout-btn" id="checkoutBtn"><i class="fa-solid fa-lock"></i> Commander maintenant</button>
+    <button class="clear-cart-btn" id="clearCartBtn"><i class="fa-solid fa-trash"></i> Vider le panier</button>
   </div>
 </aside>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authOverlay">
+  <div class="modal" id="authModal">
+    <button class="modal-close" id="authClose"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-logo"><i class="fa-solid fa-seedling"></i></div>
+    <h2 class="modal-title">Bienvenue</h2>
+    <p class="modal-sub" id="authSubtext">Connectez-vous pour accéder à votre compte</p>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="login">Connexion</button>
+      <button class="modal-tab" data-tab="register">Inscription</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm" class="modal-form">
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-icon-wrap"><i class="fa-regular fa-envelope"></i><input type="email" id="loginEmail" placeholder="votre@email.com" required/></div>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="loginPwd" placeholder="••••••••" required/></div>
+      </div>
+      <button class="modal-btn" id="loginBtn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter</button>
+      <p class="modal-switch">Pas encore de compte ? <a onclick="switchTab('register')">S'inscrire</a></p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" class="modal-form" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>Prénom</label><div class="input-icon-wrap"><i class="fa-solid fa-user"></i><input type="text" id="regPrenom" placeholder="Marie" required/></div></div>
+        <div class="form-group"><label>Nom</label><input type="text" id="regNom" placeholder="Dupont" required/></div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-icon-wrap"><i class="fa-regular fa-envelope"></i><input type="email" id="regEmail" placeholder="votre@email.com" required/></div>
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <div class="input-icon-wrap"><i class="fa-solid fa-phone"></i><input type="tel" id="regPhone" placeholder="+243 000 000 000"/></div>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="regPwd" placeholder="8 caractères minimum" required/></div>
+      </div>
+      <button class="modal-btn" id="registerBtn"><i class="fa-solid fa-user-plus"></i> Créer mon compte</button>
+      <p class="modal-switch">Déjà un compte ? <a onclick="switchTab('login')">Se connecter</a></p>
+    </div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -997,263 +525,332 @@
       <a class="logo" href="#"><i class="fa-solid fa-seedling"></i> Alegria Flower's</a>
       <p>Chaque bouquet raconte une histoire. Laissez-nous raconter la vôtre avec des fleurs fraîches et des créations uniques.</p>
       <div class="footer-socials">
-        <a class="social-link" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a class="social-link" href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a class="social-link" href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a class="social-link" href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a class="social-link" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a class="social-link" href="#"><i class="fa-brands fa-whatsapp"></i></a>
       </div>
     </div>
-    <div class="footer-col">
-      <h5>Navigation</h5>
-      <a href="#home">Accueil</a>
-      <a href="#shop">Boutique</a>
-      <a href="#about">À propos</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <div class="footer-col">
-      <h5>Produits</h5>
-      <a href="#shop">Bouquets roses</a>
-      <a href="#shop">Mix pastel</a>
-      <a href="#shop">Arrangements luxe</a>
-      <a href="#shop">Commandes spéciales</a>
-    </div>
-    <div class="footer-col">
-      <h5>Contact</h5>
-      <a href="tel:+243857961836">+243 857 961 836</a>
-      <a href="mailto:Alegriashop272@gmail.com">Alegriashop272@gmail.com</a>
-      <a href="#">Kinshasa, RDC</a>
-      <a href="#">Lun–Sam : 8h–19h</a>
-    </div>
+    <div class="footer-col"><h5>Navigation</h5><a href="#home">Accueil</a><a href="#shop">Boutique</a><a href="#about">À propos</a><a href="#contact">Contact</a></div>
+    <div class="footer-col"><h5>Produits</h5><a href="#shop">Bouquets roses</a><a href="#shop">Mix pastel</a><a href="#shop">Arrangements luxe</a><a href="#shop">Sur mesure</a></div>
+    <div class="footer-col"><h5>Contact</h5><a href="tel:+243857961836">+243 857 961 836</a><a href="mailto:Alegriashop272@gmail.com">Alegriashop272@gmail.com</a><a href="#">Lubumbashi, RDC</a><a href="#">Lun–Sam : 8h–19h</a></div>
   </div>
-  <div class="footer-bottom">
-    © <span id="year"></span> Alegria Shop Flower's · Fait avec <i class="fa-solid fa-heart" style="color:var(--rose)"></i> à Lubumbashi
-  </div>
+  <div class="footer-bottom">© <span id="year"></span> Alegria Shop Flower's · Fait avec <i class="fa-solid fa-heart" style="color:var(--rose)"></i> à Lubumbashi</div>
 </footer>
 
 <script>
-  /* ══ DATA ══ */
-  const products = [
-    { id:1, name:'Bouquet Alegria', price:15.99, img:'Rose3.jpg', category:'rose', badge:'popular', rating:'4.9 (32)' },
-    { id:2, name:'Roses Éternelles', price:5.99,  img:'Rose1.jpg', category:'rose', badge:'new',     rating:'5.0 (18)' },
-    { id:4, name:'Sunshine Bouquet', price:30.00, img:'Rose5.jpg', category:'mix',  badge:'',        rating:'4.8 (25)' },
-    { id:5, name:'Fleurs Sauvages',  price:19.00, img:'Rose6.jpg', category:'mix',  badge:'',        rating:'4.7 (14)' },
-    { id:6, name:'Arrangement Luxe', price:25.00, img:'Rose7.jpg', category:'luxe', badge:'popular', rating:'5.0 (41)' },
-    { id:7, name:'Rose Dorée',       price:22.00, img:'Rose2.jpg', category:'luxe', badge:'new',     rating:'4.9 (9)'  },
-  ];
+/* ════ DATA ════ */
+const PRODUCTS = [
+  {id:1,name:'Bouquet Alegria',price:15.99,img:'Rose3.jpg',category:'rose',badge:'popular',rating:'4.9',votes:32},
+  {id:2,name:'Roses Éternelles',price:5.99,img:'Rose1.jpg',category:'rose',badge:'new',rating:'5.0',votes:18},
+  {id:4,name:'Sunshine Bouquet',price:30.00,img:'Rose5.jpg',category:'mix',badge:'',rating:'4.8',votes:25},
+  {id:5,name:'Fleurs Sauvages',price:19.00,img:'Rose6.jpg',category:'mix',badge:'',rating:'4.7',votes:14},
+  {id:6,name:'Arrangement Luxe',price:25.00,img:'Rose7.jpg',category:'luxe',badge:'popular',rating:'5.0',votes:41},
+  {id:7,name:'Rose Dorée',price:22.00,img:'Rose2.jpg',category:'luxe',badge:'new',rating:'4.9',votes:9},
+];
 
-  /* ══ STATE ══ */
-  let cart = JSON.parse(localStorage.getItem('alegria_v2') || '[]');
-  let wishlist = new Set(JSON.parse(localStorage.getItem('alegria_wish') || '[]'));
-  let activeFilter = 'all';
+/* ════ STORAGE HELPERS ════ */
+const DB = {
+  get: k => JSON.parse(localStorage.getItem(k)||'null'),
+  set: (k,v) => localStorage.setItem(k,JSON.stringify(v)),
+  getArr: k => JSON.parse(localStorage.getItem(k)||'[]'),
+};
 
-  /* ══ HELPERS ══ */
-  const $ = id => document.getElementById(id);
-  const fmt = v => '$' + v.toFixed(2).replace('.', ',');
+/* ════ STATE ════ */
+let cart = DB.getArr('alegria_cart');
+let wishlist = new Set(DB.getArr('alegria_wish'));
+let currentUser = DB.get('alegria_user');
+let pendingCheckout = false;
 
-  function toast(msg, type='success') {
-    const el = document.createElement('div');
-    el.className = `toast ${type}`;
-    el.innerHTML = `<i class="fa-solid fa-${type==='success'?'check':'xmark'}"></i> ` + msg;
-    $('toastContainer').appendChild(el);
-    setTimeout(() => el.remove(), 2700);
-  }
+/* ════ UTILS ════ */
+const $ = id => document.getElementById(id);
+const fmt = v => '$' + v.toFixed(2).replace('.',',');
+function hashPwd(s){ let h=0; for(let i=0;i<s.length;i++) h=(Math.imul(31,h)+s.charCodeAt(i))|0; return h.toString(36); }
 
-  /* ══ HEADER SCROLL ══ */
-  window.addEventListener('scroll', () => {
-    $('siteHeader').classList.toggle('scrolled', window.scrollY > 40);
+function toast(msg, type='success'){
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<i class="fa-solid fa-${type==='success'?'check':type==='error'?'xmark':'circle-info'}"></i> ${msg}`;
+  $('toastContainer').appendChild(el);
+  setTimeout(()=>el.remove(), 2800);
+}
+
+/* ════ HEADER SCROLL ════ */
+window.addEventListener('scroll',()=>{
+  $('siteHeader').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ════ MOBILE NAV ════ */
+$('burgerBtn').addEventListener('click',()=>$('mobileNav').classList.add('open'));
+$('mobileClose').addEventListener('click',()=>$('mobileNav').classList.remove('open'));
+document.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click',()=>$('mobileNav').classList.remove('open')));
+
+/* ════ MARQUEE ════ */
+const MARQUEE_ITEMS = ['Fleurs fraîches','Livraison rapide','Créations sur mesure','Lubumbashi','Mariage & Événements','Bouquets premium','Roses fraîches','Commandes spéciales'];
+const track = $('marqueeTrack');
+[...MARQUEE_ITEMS,...MARQUEE_ITEMS].forEach(t=>{
+  const s=document.createElement('span'); s.className='marquee-item';
+  s.innerHTML=`${t}<span class="marquee-dot"></span>`; track.appendChild(s);
+});
+
+/* ════ COUNTER ANIMATION ════ */
+function animateCounters(){
+  document.querySelectorAll('.stat-number[data-target]').forEach(el=>{
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix||'+';
+    let start = 0;
+    const step = target / 60;
+    const timer = setInterval(()=>{
+      start += step;
+      if(start >= target){ el.textContent = target + suffix; clearInterval(timer); }
+      else el.textContent = Math.floor(start) + suffix;
+    }, 20);
   });
+}
+setTimeout(animateCounters, 900);
 
-  /* ══ MOBILE NAV ══ */
-  $('burgerBtn').addEventListener('click', () => $('mobileNav').classList.add('open'));
-  $('mobileClose').addEventListener('click', () => $('mobileNav').classList.remove('open'));
-  document.querySelectorAll('.mobile-link').forEach(a => {
-    a.addEventListener('click', () => $('mobileNav').classList.remove('open'));
-  });
-
-  /* ══ MARQUEE ══ */
-  const marqueeItems = ['Fleurs fraîches','Livraison rapide','Créations sur mesure','Kinshasa','Mariage & Événements','Bouquets premium','Roses fraîches','Commandes spéciales'];
-  const track = $('marqueeTrack');
-  const doubled = [...marqueeItems, ...marqueeItems];
-  doubled.forEach(t => {
-    const span = document.createElement('span');
-    span.className = 'marquee-item';
-    span.innerHTML = t + '<span class="marquee-dot"></span>';
-    track.appendChild(span);
-  });
-
-  /* ══ PRODUCTS ══ */
-  function renderProducts(filter='all') {
-    const grid = $('productsGrid');
-    grid.innerHTML = '';
-    const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
-    filtered.forEach((p, i) => {
-      const card = document.createElement('article');
-      card.className = 'product-card';
-      card.style.animationDelay = (i * 0.07) + 's';
-      const liked = wishlist.has(p.id);
-      card.innerHTML = `
-        <div class="product-img-wrap">
-          <img src="${p.img}" alt="${p.name}" loading="lazy"
-               onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#e8b4c4,#5ab782)'"/>
-          ${p.badge ? `<span class="product-badge ${p.badge}">${p.badge==='popular'?'<i class="fa-solid fa-fire"></i> Populaire':'<i class="fa-solid fa-sparkles"></i> Nouveau'}</span>` : ''}
-          <button class="wishlist-btn ${liked?'liked':''}" data-id="${p.id}" aria-label="Favori"><i class="fa-${liked?'solid':'regular'} fa-heart"></i></button>
-          <button class="quick-add" data-id="${p.id}"><i class="fa-solid fa-plus"></i> Ajouter au panier</button>
+/* ════ PRODUCTS ════ */
+function renderProducts(filter='all'){
+  const grid = $('productsGrid');
+  grid.innerHTML='';
+  const filtered = filter==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.category===filter);
+  filtered.forEach((p,i)=>{
+    const liked = wishlist.has(p.id);
+    const card = document.createElement('article');
+    card.className='product-card';
+    card.innerHTML=`
+      <div class="product-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#e8b4c4,#2d5a45)'"/>
+        ${p.badge?`<span class="product-badge ${p.badge}"><i class="fa-solid fa-${p.badge==='popular'?'fire':'sparkles'}"></i> ${p.badge==='popular'?'Populaire':'Nouveau'}</span>`:''}
+        <button class="wishlist-btn ${liked?'liked':''}" data-id="${p.id}"><i class="fa-${liked?'solid':'regular'} fa-heart"></i></button>
+        <button class="quick-add" data-id="${p.id}"><i class="fa-solid fa-plus"></i> Ajouter au panier</button>
+      </div>
+      <div class="product-body">
+        <p class="product-category">${{rose:'Roses',mix:'Mix floral',luxe:'Luxe'}[p.category]||p.category}</p>
+        <h3 class="product-name">${p.name}</h3>
+        <div class="product-footer">
+          <div>
+            <div class="product-price">${fmt(p.price)}</div>
+            <div class="product-rating"><i class="fa-solid fa-star" style="font-size:.72rem;color:var(--gold)"></i> ${p.rating} (${p.votes})</div>
+          </div>
+          <button class="add-btn" data-id="${p.id}"><i class="fa-solid fa-plus"></i></button>
         </div>
-        <div class="product-body">
-          <p class="product-category">${p.category==='rose'?'Roses':p.category==='mix'?'Mix':p.category==='luxe'?'Luxe':p.category}</p>
-          <h3 class="product-name">${p.name}</h3>
-          <div class="product-footer">
-            <div>
-              <div class="product-price">${fmt(p.price)}</div>
-              <div class="product-rating"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.75rem"></i> ${p.rating}</div>
-            </div>
-            <button class="add-btn" data-id="${p.id}" aria-label="Ajouter"><i class="fa-solid fa-plus"></i></button>
+      </div>`;
+    grid.appendChild(card);
+    // stagger reveal
+    setTimeout(()=>card.classList.add('visible'), i * 80 + 100);
+  });
+}
+renderProducts();
+
+$('productsGrid').addEventListener('click', e=>{
+  const addBtn = e.target.closest('.add-btn,.quick-add');
+  const wishBtn = e.target.closest('.wishlist-btn');
+  if(addBtn) addToCart(+addBtn.dataset.id);
+  if(wishBtn) toggleWish(+wishBtn.dataset.id, wishBtn);
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(btn.dataset.filter);
+  });
+});
+
+function toggleWish(id, btn){
+  if(wishlist.has(id)){wishlist.delete(id);btn.innerHTML='<i class="fa-regular fa-heart"></i>';btn.classList.remove('liked');toast('Retiré des favoris','error');}
+  else{wishlist.add(id);btn.innerHTML='<i class="fa-solid fa-heart"></i>';btn.classList.add('liked');toast('Ajouté aux favoris');}
+  DB.set('alegria_wish',[...wishlist]);
+}
+
+/* ════ CART ════ */
+function saveCart(){ DB.set('alegria_cart',cart); }
+
+function addToCart(id){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  const ex = cart.find(i=>i.id===id);
+  if(ex) ex.qty++; else cart.push({...p,qty:1});
+  saveCart(); updateCartUI();
+  // badge pop animation
+  const badge = $('cartBadge');
+  badge.classList.remove('pop');
+  void badge.offsetWidth;
+  badge.classList.add('pop');
+  setTimeout(()=>badge.classList.remove('pop'),400);
+  toast(`"${p.name}" ajouté au panier`);
+}
+
+function changeQty(id,delta){
+  const item = cart.find(i=>i.id===id); if(!item) return;
+  item.qty += delta;
+  if(item.qty<=0) cart = cart.filter(i=>i.id!==id);
+  saveCart(); updateCartUI();
+}
+function removeItem(id){ cart=cart.filter(i=>i.id!==id); saveCart(); updateCartUI(); }
+
+function updateCartUI(){
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  $('cartBadge').textContent = count;
+  $('cartSubtotal').textContent = fmt(total);
+  $('cartTotal').textContent = fmt(total);
+  const body = $('cartBody');
+  if(cart.length===0){
+    body.innerHTML=`<div class="cart-empty"><i class="fa-solid fa-basket-shopping cart-empty-icon"></i><p>Votre panier est vide</p><p style="font-size:.82rem;color:var(--muted)">Ajoutez des bouquets pour commencer</p></div>`;
+    $('cartFoot').style.display='none';
+  } else {
+    $('cartFoot').style.display='block';
+    body.innerHTML = cart.map(item=>`
+      <div class="cart-item">
+        <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.style.background='linear-gradient(135deg,#e8b4c4,#2d5a45)'"/>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${fmt(item.price*item.qty)}</div>
+          <div class="cart-item-controls">
+            <button class="qty-btn" data-action="dec" data-id="${item.id}"><i class="fa-solid fa-minus"></i></button>
+            <span class="qty-val">${item.qty}</span>
+            <button class="qty-btn" data-action="inc" data-id="${item.id}"><i class="fa-solid fa-plus"></i></button>
           </div>
-        </div>`;
-      grid.appendChild(card);
-    });
+        </div>
+        <button class="remove-item" data-remove="${item.id}"><i class="fa-solid fa-trash-can"></i></button>
+      </div>`).join('');
   }
-  renderProducts();
+}
 
-  $('productsGrid').addEventListener('click', e => {
-    const addBtn = e.target.closest('[data-id].add-btn, [data-id].quick-add');
-    const wishBtn = e.target.closest('.wishlist-btn');
-    if (addBtn) addToCart(Number(addBtn.dataset.id));
-    if (wishBtn) toggleWish(Number(wishBtn.dataset.id), wishBtn);
+$('cartBody').addEventListener('click',e=>{
+  const q=e.target.closest('.qty-btn'), r=e.target.closest('.remove-item');
+  if(q) changeQty(+q.dataset.id, q.dataset.action==='inc'?1:-1);
+  if(r) removeItem(+r.dataset.remove);
+});
+
+function openCart(){ $('cartPanel').classList.add('open');$('cartOverlay').classList.add('open');document.body.style.overflow='hidden'; }
+function closeCart(){ $('cartPanel').classList.remove('open');$('cartOverlay').classList.remove('open');document.body.style.overflow=''; }
+$('openCart').addEventListener('click',openCart);
+$('closeCart').addEventListener('click',closeCart);
+$('cartOverlay').addEventListener('click',closeCart);
+$('clearCartBtn').addEventListener('click',()=>{ cart=[];saveCart();updateCartUI();toast('Panier vidé','info'); });
+
+$('checkoutBtn').addEventListener('click',()=>{
+  if(cart.length===0){ toast('Votre panier est vide','error'); return; }
+  if(!currentUser){ pendingCheckout=true; closeCart(); openAuth('login','Connectez-vous pour finaliser votre commande'); return; }
+  placeOrder();
+});
+
+function placeOrder(){
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const order = {
+    id: 'CMD-'+Date.now(),
+    userId: currentUser.id,
+    userName: currentUser.prenom+' '+currentUser.nom,
+    userEmail: currentUser.email,
+    userPhone: currentUser.phone||'',
+    items: cart.map(i=>({name:i.name,qty:i.qty,price:i.price})),
+    total,
+    date: new Date().toISOString(),
+    status: 'En attente'
+  };
+  const orders = DB.getArr('alegria_orders');
+  orders.push(order);
+  DB.set('alegria_orders',orders);
+  cart=[]; saveCart(); updateCartUI(); closeCart();
+  toast(`Commande ${order.id} confirmée ! Merci ${currentUser.prenom} 🌸`,'success');
+}
+
+/* ════ AUTH ════ */
+function openAuth(tab='login', subtext=''){
+  $('authOverlay').classList.add('open');
+  if(subtext) $('authSubtext').textContent=subtext;
+  switchTab(tab);
+  document.body.style.overflow='hidden';
+}
+function closeAuth(){ $('authOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+function switchTab(tab){
+  document.querySelectorAll('.modal-tab').forEach(t=>{
+    t.classList.toggle('active', t.dataset.tab===tab);
   });
+  $('loginForm').style.display = tab==='login'?'flex':'none';
+  $('registerForm').style.display = tab==='register'?'flex':'none';
+  $('loginForm').style.flexDirection='column';
+  $('registerForm').style.flexDirection='column';
+}
+window.switchTab = switchTab;
 
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      renderProducts(activeFilter);
-    });
-  });
+document.querySelectorAll('.modal-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>switchTab(tab.dataset.tab));
+});
 
-  function toggleWish(id, btn) {
-    if (wishlist.has(id)) {
-      wishlist.delete(id);
-      btn.innerHTML = '<i class="fa-regular fa-heart"></i>'; btn.classList.remove('liked');
-      toast('Retiré des favoris', 'error');
-    } else {
-      wishlist.add(id);
-      btn.innerHTML = '<i class="fa-solid fa-heart"></i>'; btn.classList.add('liked');
-      toast('Ajouté aux favoris ❤️');
-    }
-    localStorage.setItem('alegria_wish', JSON.stringify([...wishlist]));
+$('authClose').addEventListener('click', closeAuth);
+$('authOverlay').addEventListener('click', e=>{ if(e.target===$('authOverlay')) closeAuth(); });
+
+$('userBtn').addEventListener('click',()=>{
+  if(currentUser){ logout(); } else { openAuth('login'); }
+});
+
+function updateUserUI(){
+  if(currentUser){
+    $('userLabel').textContent = currentUser.prenom;
+    $('userBtn').title = 'Se déconnecter';
+    $('userBtn').querySelector('i').className='fa-solid fa-user-check';
+  } else {
+    $('userLabel').textContent = 'Connexion';
+    $('userBtn').title = '';
+    $('userBtn').querySelector('i').className='fa-regular fa-user';
   }
+}
 
-  /* ══ CART ══ */
-  function saveCart() { localStorage.setItem('alegria_v2', JSON.stringify(cart)); }
+function logout(){
+  currentUser=null; DB.set('alegria_user',null);
+  updateUserUI(); toast('Déconnecté','info');
+}
 
-  function addToCart(id) {
-    const p = products.find(x => x.id === id);
-    if (!p) return;
-    const ex = cart.find(i => i.id === id);
-    if (ex) ex.qty++; else cart.push({...p, qty:1});
-    saveCart(); updateCartUI();
-    toast(`"${p.name}" ajouté au panier`);
-  }
+$('loginBtn').addEventListener('click',()=>{
+  const email=$('loginEmail').value.trim();
+  const pwd=$('loginPwd').value;
+  if(!email||!pwd){ toast('Remplissez tous les champs','error'); return; }
+  const users = DB.getArr('alegria_users');
+  const user = users.find(u=>u.email===email && u.pwd===hashPwd(pwd));
+  if(!user){ toast('Email ou mot de passe incorrect','error'); return; }
+  currentUser=user; DB.set('alegria_user',user);
+  updateUserUI(); closeAuth();
+  toast(`Bienvenue ${user.prenom} !`,'success');
+  if(pendingCheckout){ pendingCheckout=false; openCart(); }
+});
 
-  function changeQty(id, delta) {
-    const item = cart.find(i => i.id === id);
-    if (!item) return;
-    item.qty += delta;
-    if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-    saveCart(); updateCartUI();
-  }
+$('registerBtn').addEventListener('click',()=>{
+  const prenom=$('regPrenom').value.trim();
+  const nom=$('regNom').value.trim();
+  const email=$('regEmail').value.trim();
+  const phone=$('regPhone').value.trim();
+  const pwd=$('regPwd').value;
+  if(!prenom||!nom||!email||!pwd){ toast('Remplissez les champs obligatoires','error'); return; }
+  if(pwd.length<6){ toast('Mot de passe trop court (min 6 caractères)','error'); return; }
+  const users = DB.getArr('alegria_users');
+  if(users.find(u=>u.email===email)){ toast('Cet email est déjà utilisé','error'); return; }
+  const newUser = {id:'USR-'+Date.now(), prenom, nom, email, phone, pwd:hashPwd(pwd), createdAt:new Date().toISOString()};
+  users.push(newUser);
+  DB.set('alegria_users',users);
+  currentUser=newUser; DB.set('alegria_user',newUser);
+  updateUserUI(); closeAuth();
+  toast(`Compte créé ! Bienvenue ${prenom} 🌸`,'success');
+  if(pendingCheckout){ pendingCheckout=false; openCart(); }
+});
 
-  function removeItem(id) {
-    cart = cart.filter(i => i.id !== id);
-    saveCart(); updateCartUI();
-  }
+/* ════ FORMS ════ */
+$('contactForm').addEventListener('submit',e=>{ e.preventDefault(); toast('Message envoyé ! Nous vous recontactons bientôt'); e.target.reset(); });
+$('newsletterForm').addEventListener('submit',e=>{ e.preventDefault(); toast('Inscription confirmée !'); e.target.reset(); });
 
-  function updateCartUI() {
-    const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
-    const count = cart.reduce((s,i) => s + i.qty, 0);
-    $('cartBadge').textContent = count;
-    $('cartSubtotal').textContent = fmt(total);
-    $('cartTotal').textContent = fmt(total);
+/* ════ SCROLL REVEAL ════ */
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-    const body = $('cartBody');
-    if (cart.length === 0) {
-      body.innerHTML = `<div class="cart-empty"><span class="cart-empty-icon"><i class="fa-solid fa-basket-shopping"></i></span><p>Votre panier est vide</p><p style="font-size:0.82rem;color:var(--muted)">Ajoutez des bouquets pour commencer</p></div>`;
-      $('cartFoot').style.display = 'none';
-    } else {
-      $('cartFoot').style.display = 'block';
-      body.innerHTML = cart.map(item => `
-        <div class="cart-item">
-          <img class="cart-item-img" src="${item.img}" alt="${item.name}"
-               onerror="this.style.background='linear-gradient(135deg,#e8b4c4,#5ab782)'"/>
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${fmt(item.price * item.qty)}</div>
-            <div class="cart-item-controls">
-              <button class="qty-btn" data-action="dec" data-id="${item.id}"><i class="fa-solid fa-minus"></i></button>
-              <span class="qty-val">${item.qty}</span>
-              <button class="qty-btn" data-action="inc" data-id="${item.id}"><i class="fa-solid fa-plus"></i></button>
-            </div>
-          </div>
-          <button class="remove-item" data-remove="${item.id}" title="Supprimer"><i class="fa-solid fa-trash-can"></i></button>
-        </div>`).join('');
-    }
-  }
-
-  $('cartBody').addEventListener('click', e => {
-    const qtyBtn = e.target.closest('.qty-btn');
-    const remBtn = e.target.closest('.remove-item');
-    if (qtyBtn) changeQty(Number(qtyBtn.dataset.id), qtyBtn.dataset.action === 'inc' ? 1 : -1);
-    if (remBtn) removeItem(Number(remBtn.dataset.remove));
-  });
-
-  function openCart() {
-    $('cartPanel').classList.add('open');
-    $('cartOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeCart() {
-    $('cartPanel').classList.remove('open');
-    $('cartOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  $('openCart').addEventListener('click', openCart);
-  $('closeCart').addEventListener('click', closeCart);
-  $('cartOverlay').addEventListener('click', closeCart);
-
-  $('clearCartBtn').addEventListener('click', () => {
-    cart = []; saveCart(); updateCartUI();
-    toast('Panier vidé');
-  });
-
-  $('checkoutBtn').addEventListener('click', () => {
-    if (cart.length === 0) { toast('Votre panier est vide', 'error'); return; }
-    const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
-    toast(`Commande de ${fmt(total)} envoyée ! Merci`);
-    cart = []; saveCart(); updateCartUI(); closeCart();
-  });
-
-  /* ══ FORMS ══ */
-  $('contactForm').addEventListener('submit', e => {
-    e.preventDefault();
-    toast('Message envoyé ! Nous vous recontactons bientôt');
-    e.target.reset();
-  });
-  $('newsletterForm').addEventListener('submit', e => {
-    e.preventDefault();
-    toast('Inscription confirmée ! Merci');
-    e.target.reset();
-  });
-
-  /* ══ SCROLL REVEAL ══ */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  /* ══ INIT ══ */
-  updateCartUI();
-  $('year').textContent = new Date().getFullYear();
+/* ════ INIT ════ */
+updateCartUI();
+updateUserUI();
+$('year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
+
